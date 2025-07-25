@@ -1,0 +1,230 @@
+/* *filepath: /meme-it-react/meme-it-react/src/styles/styles.css*
+
+* This file contains global styles for the application.
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+} */ 
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #181818;
+  color: white;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body.light-mode {
+  background-color: #fff;
+  color: #222;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  /* overflow: auto; */
+}
+
+.home-content {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.home-content .right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-content img {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 90px;
+  height: 100vh;
+  padding: 20px 0;
+  align-items: center;
+  border-right: 1px solid rgba(105, 104, 104, 0.228)
+}
+
+.sidebar.light-mode {
+  background: #eee;
+}
+
+.logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 12px; /* Add margin for spacing below logo */
+}
+
+.top-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* Adjust gap as needed */
+  margin-top: 30px;
+  margin-bottom: auto; /* Push bottom-icons to the bottom */
+}
+
+.bottom-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  margin-top: auto; /* Push bottom-icons to the bottom */
+  margin-bottom: 20px;
+}
+
+.sidebar-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 22px; /* reduced from 22px */
+  margin: 0 30px;
+  color: #fff;
+  transition: color 0.2s, background 0.2s;
+  border-radius: 12px;
+  padding: 8px 0;
+}
+
+.sidebar-icon:hover,
+.sidebar-icon:focus {
+  transform: scale(1.18); 
+  z-index: 1;
+}
+
+.sidebar-icon.active {
+  color: #487fffb2;
+}
+
+.sidebar-icon i,
+.sidebar-icon span {
+  transition: color 0.2s;
+}
+
+.toggle-mode {
+  background: none;
+  border: 2px solid #333;
+  border-radius: 50%;
+  padding: 8px;
+  color: #fff;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+body.light-mode .toggle-mode {
+  color: #222;
+  border-color: #bbb;
+  background: #fff;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 0 50px;
+}
+
+.left p {
+  font-family: "Poppins", sans-serif;
+  height: 0;
+  font-size: 32px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.left h1 {
+  font-size: 96px;
+  height: 0;
+  font-family: "Faustina", serif;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+.right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: none;
+  overflow: hidden;
+}
+
+ .right img {
+  width: 100%;
+  height: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  object-fit: cover;
+  display: block;
+  border-radius: 32px;
+  box-shadow: 0 32px 32px 12px rgba(110, 110, 110, 0.25), 0 2px 8px 0 rgba(255,255,255,0.08);
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo-section .sidebar-icon {
+  font-size: 28px; 
+}
+
+.logo-underline {
+  width: 40px;
+  height: 2px;
+  background: #fff;
+  opacity: 0.3;
+  border-radius: 1px;
+  margin: 10px 0;
+}
+
+body.light-mode .logo-underline {
+  background: #222; /* dark color for visibility in light mode */
+  opacity: 0.2;
+}
+
+.sidebar-icon span {
+  font-size: 12px; /* reduced from 12px or higher */
+  margin-top: 6px;
+  color: #aaa;
+  font-family: 'Poppins', sans-serif;
+}
+
+.sidebar-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 2px;
+}

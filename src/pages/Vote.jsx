@@ -11,12 +11,51 @@ const Vote = () => {
 
   return (
     <div className="vote-content" style={{ width: '100%', height: '100%' }}>
-      {/* You can add your voting UI here */}
-      <div className="vote-placeholder" style={{ margin: 'auto', textAlign: 'center' }}>
-        <h2>Vote for your favorite meme!</h2>
-        <button className="how-to-play-btn" onClick={toggleHowToPlayModal}>How to play &gt;</button>
-        <button className="login-btn" onClick={toggleLoginModal}>Login</button>
+      {/* Header Bar */}
+      <div className="vote-header" style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '16px 24px',
+        background: '#181818',
+        borderBottom: '1px solid #222'
+      }}>
+        <span style={{ color: '#fff', fontWeight: 'bold', fontSize: '1.25rem' }}>Just MEME IT</span>
+        <div>
+          <button
+            className="how-to-play-btn"
+            style={{
+              marginRight: '8px',
+              background: '#2563eb',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '8px 16px',
+              fontWeight: 500,
+              cursor: 'pointer'
+            }}
+            onClick={toggleHowToPlayModal}
+          >
+            How to play
+          </button>
+          <button
+            className="login-btn"
+            style={{
+              background: '#fff',
+              color: '#181818',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '8px 16px',
+              fontWeight: 500,
+              cursor: 'pointer'
+            }}
+            onClick={toggleLoginModal}
+          >
+            Login
+          </button>
+        </div>
       </div>
+      {/* Main content can go here */}
       <Modal 
         isOpen={isHowToPlayModalOpen} 
         onClose={toggleHowToPlayModal} 

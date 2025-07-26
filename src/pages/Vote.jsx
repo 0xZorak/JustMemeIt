@@ -35,61 +35,62 @@ const Vote = () => {
     <div className="vote-content" style={{ width: '100%', height: '100%' }}>
       {/* Header Bar */}
       <div className="vote-header">
-        <span >Just meme it</span>
-        <div>
+        <span>Just meme it</span>
+        <div className="vote-header-bar">
+          {/* How to Play button */}
           <button
             className="how-to-play-btn"
-            style={{
-              marginRight: '14px',
-              background: '#487fffb2',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '6px',
-              padding: '8px 16px',
-              fontWeight: 500,
-              cursor: 'pointer'
-    
-            }}
             onClick={toggleHowToPlayModal}
           >
-            How to play
+            How to Play
           </button>
-          {/* If logged in with X, show profile image, else show Login */}
-          {xUser ? (
-            <img
-              src={xUser.profile_image_url}
-              alt="X Profile"
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                objectFit: 'cover',
-                border: '2px solid #fff',
-                cursor: 'pointer'
-              }}
-              onClick={toggleLoginModal}
-            />
-          ) : (
+          {/* Header logic */}
+          {isConnected && !xUser && (
+            <>
+              <ConnectButton />
+              <button
+                className="login-btn"
+                onClick={toggleLoginModal}
+              >
+                Login your X
+              </button>
+            </>
+          )}
+          {xUser && !isConnected && (
+            <>
+              <img
+                src={xUser.profile_image_url}
+                alt="X Profile"
+                className="x-profile-img"
+                onClick={toggleLoginModal}
+              />
+              <button
+                className="login-btn wallet"
+                onClick={toggleLoginModal}
+              >
+                Connect your wallet
+              </button>
+            </>
+          )}
+          {xUser && isConnected && (
+            <>
+              <ConnectButton />
+              <img
+                src={xUser.profile_image_url}
+                alt="X Profile"
+                className="x-profile-img"
+                onClick={toggleLoginModal}
+              />
+            </>
+          )}
+          {!xUser && !isConnected && (
             <button
               className="login-btn"
-              style={{
-                background: '#fff',
-                color: '#181818',
-                border: 'none',
-                borderRadius: '6px',
-                padding: '8px 16px',
-                fontWeight: 500,
-                cursor: 'pointer'
-              }}
               onClick={toggleLoginModal}
             >
               Login
             </button>
           )}
-          {/* RainbowKit wallet connect button */}
-          <span style={{ marginLeft: 12 }}>
-            <ConnectButton />
-          </span>
         </div>
       </div>
       {/* Main content can go here */}
@@ -130,11 +131,11 @@ const Vote = () => {
           <button className="twitter-btn" onClick={handleXLogin}>X (Twitter)</button>
         </div>
         {/* Show wallet address if connected */}
-        {isConnected && (
+        {/* {isConnected && (
           <div style={{ marginTop: 12, color: '#2563eb', fontWeight: 500 }}>
             Wallet: {address}
           </div>
-        )}
+        )} */}
       </Modal>
     </div>
   );

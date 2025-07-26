@@ -4,10 +4,28 @@ import {
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
 import { createConfig, WagmiProvider, http } from 'wagmi';
-import { mainnet, sepolia } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const chains = [mainnet, sepolia];
+const seiEvm = {
+  id: 1329, // mainnet: 1329, testnet: 713715,
+  name: 'Sei EVM',
+  network: 'sei',
+  nativeCurrency: {
+    name: 'SEI',
+    symbol: 'SEI',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: { http: ['https://evm-rpc.sei-apis.com'] }, // mainnet
+    public: { http: ['https://evm-rpc.sei-apis.com'] },
+  },
+  blockExplorers: {
+    default: { name: 'Sei Explorer', url: 'https://www.seiscan.app' },
+  },
+  testnet: false,
+};
+
+const chains = [seiEvm];
 
 const { connectors } = getDefaultWallets({
   appName: 'Just MEME IT',

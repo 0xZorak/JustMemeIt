@@ -1,13 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from '../components/Modal';
 import '../styles/vote.css';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
 
 const Vote = () => {
   const [isHowToPlayModalOpen, setHowToPlayModalOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  const [xUser, setXUser] = useState(null);
+
+  // wagmi hook for wallet info
+  const { address, isConnected } = useAccount();
+
+  // Check for X login success on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name');
+    const profile_image_url = params.get('profile_image_url');
+    if (name && profile_image_url) {
+      setXUser({ name, profile_image_url });
+      window.history.replaceState({}, document.title, window.location.pathname); // Clean up URL
+    }
+  }, []);
 
   const toggleHowToPlayModal = () => setHowToPlayModalOpen((open) => !open);
   const toggleLoginModal = () => setLoginModalOpen((open) => !open);
+
+  // Real X login: redirect to backend
+  const handleXLogin = () => {
+    window.location.href = 'http://localhost:4000/auth/x/login';
+  };
 
   return (
     <div className="vote-content" style={{ width: '100%', height: '100%' }}>
@@ -38,21 +60,42 @@ const Vote = () => {
           >
             How to play
           </button>
-          <button
-            className="login-btn"
-            style={{
-              background: '#fff',
-              color: '#181818',
-              border: 'none',
-              borderRadius: '6px',
-              padding: '8px 16px',
-              fontWeight: 500,
-              cursor: 'pointer'
-            }}
-            onClick={toggleLoginModal}
-          >
-            Login
-          </button>
+          {/* If logged in with X, show profile image, else show Login */}
+          {xUser ? (
+            <img
+              src={xUser.profile_image_url}
+              alt="X Profile"
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: '2px solid #fff',
+                cursor: 'pointer'
+              }}
+              onClick={toggleLoginModal}
+            />
+          ) : (
+            <button
+              className="login-btn"
+              style={{
+                background: '#fff',
+                color: '#181818',
+                border: 'none',
+                borderRadius: '6px',
+                padding: '8px 16px',
+                fontWeight: 500,
+                cursor: 'pointer'
+              }}
+              onClick={toggleLoginModal}
+            >
+              Login
+            </button>
+          )}
+          {/* RainbowKit wallet connect button */}
+          <span style={{ marginLeft: 12 }}>
+            <ConnectButton />
+          </span>
         </div>
       </div>
       {/* Main content can go here */}
@@ -87,9 +130,16 @@ const Vote = () => {
       >
         <p>New here? We'll help you create an account in no time!</p>
         <div className="login-options">
-          <button className="wallet-btn">Wallet</button>
-          <button className="twitter-btn">Twitter</button>
+          {/* Wallet connect handled by RainbowKit */}
+          <ConnectButton />
+          <button className="twitter-btn" onClick={handleXLogin}>X (Twitter)</button>
         </div>
+        {/* Show wallet address if connected */}
+        {isConnected && (
+          <div style={{ marginTop: 12, color: '#2563eb', fontWeight: 500 }}>
+            Wallet: {address}
+          </div>
+        )}
       </Modal>
     </div>
   );

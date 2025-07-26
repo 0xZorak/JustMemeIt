@@ -12,27 +12,21 @@ const Vote = () => {
   return (
     <div className="vote-content" style={{ width: '100%', height: '100%' }}>
       {/* Header Bar */}
-      <div className="vote-header" style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '16px 24px',
-        background: '#181818',
-        borderBottom: '1px solid #222'
-      }}>
-        <span style={{ color: '#fff', fontWeight: 'bold', fontSize: '1.25rem' }}>Just MEME IT</span>
+      <div className="vote-header">
+        <span >Just meme it</span>
         <div>
           <button
             className="how-to-play-btn"
             style={{
-              marginRight: '8px',
-              background: '#2563eb',
+              marginRight: '14px',
+              background: '#487fffb2',
               color: '#fff',
               border: 'none',
               borderRadius: '6px',
               padding: '8px 16px',
               fontWeight: 500,
               cursor: 'pointer'
+    
             }}
             onClick={toggleHowToPlayModal}
           >
@@ -84,6 +78,7 @@ const Vote = () => {
         isOpen={isLoginModalOpen} 
         onClose={toggleLoginModal} 
         title="Log in / Sign Up"
+        showOK={false}
       >
         <p>New here? We'll help you create an account in no time!</p>
         <div className="login-options">

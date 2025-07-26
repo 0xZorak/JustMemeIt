@@ -10,7 +10,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
         <span className="close-modal" onClick={onClose}>&times;</span>
         <h2>{title}</h2>
         {children}
-        <button className="modal-action" onClick={onClose}>OK</button>
+
       </div>
     </div>
   );

@@ -66,6 +66,11 @@ const Vote = () => {
     window.location.href = 'http://localhost:4000/auth/x/login';
   };
 
+  // Guarded modal toggle
+  const guardedToggleLoginModal = () => {
+    if (!xUser && !isConnected) setLoginModalOpen((open) => !open);
+  };
+
   return (
     <div className="vote-content" style={{ width: '100%', height: '100%' }}>
       {/* Header Bar */}
@@ -89,58 +94,116 @@ const Vote = () => {
               </button>
             </>
           )}
-          {xUser && (
-            <div style={{ position: 'relative', display: 'inline-block' }} ref={dropdownRef}>
-              <img
-                src={xUser.profile_image_url}
-                alt="X Profile"
-                className="x-profile-img"
-                title="Account"
-                style={{ cursor: 'pointer', width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', border: '2px solid #fff' }}
-                onClick={() => setShowDropdown((show) => !show)}
-              />
-              {showDropdown && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    right: 0,
-                    marginTop: 8,
-                    background: '#222',
-                    border: '1px solid #444',
-                    borderRadius: 8,
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                    zIndex: 100,
-                    minWidth: 140,
-                  }}
-                >
-                  <div style={{ padding: '12px 16px', color: '#fff', borderBottom: '1px solid #333' }}>
-                    {xUser.name}
-                  </div>
-                  <button
+          {xUser && isConnected && (
+            <>
+              <ConnectButton />
+              <div style={{ position: 'relative', display: 'inline-block' }} ref={dropdownRef}>
+                <img
+                  src={xUser.profile_image_url}
+                  alt="X Profile"
+                  className="x-profile-img"
+                  title="Account"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setShowDropdown((show) => !show)}
+                />
+                {showDropdown && (
+                  <div
                     style={{
-                      width: '100%',
-                      padding: '10px 16px',
-                      background: 'none',
-                      color: '#ff4d4f',
-                      border: 'none',
-                      borderRadius: '0 0 8px 8px',
-                      cursor: 'pointer',
-                      textAlign: 'left',
-                      fontWeight: 500,
+                      position: 'absolute',
+                      right: 0,
+                      marginTop: 8,
+                      background: '#222',
+                      border: '1px solid #444',
+                      borderRadius: 8,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                      zIndex: 100,
+                      minWidth: 140,
                     }}
-                    onClick={handleXLogout}
                   >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+                    <div style={{ fontFamily: 'poppins, sans-serif', padding: '12px 16px', color: '#fff', borderBottom: '1px solid #333' }}>
+                      {xUser.name}
+                    </div>
+                    <button
+                      style={{
+                        width: '100%',
+                        padding: '10px 16px',
+                        background: 'none',
+                        color: '#ff4d4f',
+                        border: 'none',
+                        borderRadius: '0 0 8px 8px',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        fontWeight: 500,
+                        fontFamily: 'poppins, sans-serif',
+                      }}
+                      onClick={handleXLogout}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            </>
           )}
-          {/* <ConnectButton /> */}
+          {xUser && !isConnected && (
+            <>
+              <div style={{ position: 'relative', display: 'inline-block' }} ref={dropdownRef}>
+                <img
+                  src={xUser.profile_image_url}
+                  alt="X Profile"
+                  className="x-profile-img"
+                  title="Account"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setShowDropdown((show) => !show)}
+                />
+                {showDropdown && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      right: 0,
+                      marginTop: 8,
+                      background: '#222',
+                      border: '1px solid #444',
+                      borderRadius: 8,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                      zIndex: 100,
+                      minWidth: 140,
+                    }}
+                  >
+                    <div style={{ padding: '12px 16px', color: '#fff', borderBottom: '1px solid #333' }}>
+                      {xUser.name}
+                    </div>
+                    <button
+                      style={{
+                        width: '100%',
+                        padding: '10px 16px',
+                        background: 'none',
+                        color: '#ff4d4f',
+                        border: 'none',
+                        borderRadius: '0 0 8px 8px',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        fontWeight: 500,
+                      }}
+                      onClick={handleXLogout}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+              <button
+                className="login-btn wallet"
+                onClick={isConnected ? undefined : guardedToggleLoginModal}
+              >
+                Connect wallet
+              </button>
+            </>
+          )}
           {!xUser && !isConnected && (
             <button
               className="login-btn"
-              onClick={toggleLoginModal}
+              onClick={guardedToggleLoginModal}
             >
               Login
             </button>
@@ -173,8 +236,8 @@ const Vote = () => {
         <p className="sub-text">All voters for that meme receive a reward NFT drop.</p>
       </Modal>
       <Modal 
-        isOpen={isLoginModalOpen} 
-        onClose={toggleLoginModal} 
+        isOpen={isLoginModalOpen && !xUser && !isConnected}
+        onClose={toggleLoginModal}
         title="Log in / Sign Up"
         showOK={false}
       >

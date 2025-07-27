@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/logo.png';
+import { SiX } from 'react-icons/si';     
 
 const Sidebar = ({ lightMode, toggleMode }) => {
   return (
@@ -37,7 +38,8 @@ const Sidebar = ({ lightMode, toggleMode }) => {
           <i className="fa-brands fa-telegram"></i>
         </a>
         <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer">
-          <i className="fa-brands fa-twitter"></i>
+          {/* <i className="fa-brands fa-twitter"></i> */}
+          <SiX />
         </a>
       </div>
     </div>

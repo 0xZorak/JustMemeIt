@@ -1,27 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Modal from '../components/Modal';
 import '../styles/vote.css';
+import { SiX } from 'react-icons/si';     
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
+
+const X_USER_KEY = 'xUser';
 
 const Vote = () => {
   const [isHowToPlayModalOpen, setHowToPlayModalOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [xUser, setXUser] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   // wagmi hook for wallet info
   const { address, isConnected } = useAccount();
 
-  // Check for X login success on mount
+  // On mount: check for X login in URL or localStorage
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const name = params.get('name');
     const profile_image_url = params.get('profile_image_url');
     if (name && profile_image_url) {
-      setXUser({ name, profile_image_url });
+      const user = { name, profile_image_url };
+      setXUser(user);
+      localStorage.setItem(X_USER_KEY, JSON.stringify(user));
       window.history.replaceState({}, document.title, window.location.pathname); // Clean up URL
+    } else {
+      // Try to load from localStorage
+      const stored = localStorage.getItem(X_USER_KEY);
+      if (stored) setXUser(JSON.parse(stored));
     }
   }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    }
+    if (showDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDropdown]);
+
+  // Optional: logout handler for X
+  const handleXLogout = () => {
+    setXUser(null);
+    localStorage.removeItem(X_USER_KEY);
+    setShowDropdown(false);
+  };
 
   const toggleHowToPlayModal = () => setHowToPlayModalOpen((open) => !open);
   const toggleLoginModal = () => setLoginModalOpen((open) => !open);
@@ -37,52 +72,71 @@ const Vote = () => {
       <div className="vote-header">
         <span>Just meme it</span>
         <div className="vote-header-bar">
-          {/* How to Play button */}
           <button
             className="how-to-play-btn"
             onClick={toggleHowToPlayModal}
           >
             How to Play
           </button>
-          {/* Header logic */}
           {isConnected && !xUser && (
             <>
               <ConnectButton />
               <button
                 className="login-btn"
-                onClick={toggleLoginModal}
+                onClick={handleXLogin}
               >
-                Login your X
+                Login your <SiX />
               </button>
             </>
           )}
-          {xUser && !isConnected && (
-            <>
+          {xUser && (
+            <div style={{ position: 'relative', display: 'inline-block' }} ref={dropdownRef}>
               <img
                 src={xUser.profile_image_url}
                 alt="X Profile"
                 className="x-profile-img"
-                onClick={toggleLoginModal}
+                title="Account"
+                style={{ cursor: 'pointer', width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', border: '2px solid #fff' }}
+                onClick={() => setShowDropdown((show) => !show)}
               />
-              <button
-                className="login-btn wallet"
-                onClick={toggleLoginModal}
-              >
-                Connect your wallet
-              </button>
-            </>
+              {showDropdown && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    marginTop: 8,
+                    background: '#222',
+                    border: '1px solid #444',
+                    borderRadius: 8,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                    zIndex: 100,
+                    minWidth: 140,
+                  }}
+                >
+                  <div style={{ padding: '12px 16px', color: '#fff', borderBottom: '1px solid #333' }}>
+                    {xUser.name}
+                  </div>
+                  <button
+                    style={{
+                      width: '100%',
+                      padding: '10px 16px',
+                      background: 'none',
+                      color: '#ff4d4f',
+                      border: 'none',
+                      borderRadius: '0 0 8px 8px',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      fontWeight: 500,
+                    }}
+                    onClick={handleXLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           )}
-          {xUser && isConnected && (
-            <>
-              <ConnectButton />
-              <img
-                src={xUser.profile_image_url}
-                alt="X Profile"
-                className="x-profile-img"
-                onClick={toggleLoginModal}
-              />
-            </>
-          )}
+          {/* <ConnectButton /> */}
           {!xUser && !isConnected && (
             <button
               className="login-btn"
@@ -93,7 +147,7 @@ const Vote = () => {
           )}
         </div>
       </div>
-      {/* Main content can go here */}
+      
       <Modal 
         isOpen={isHowToPlayModalOpen} 
         onClose={toggleHowToPlayModal} 
@@ -126,16 +180,9 @@ const Vote = () => {
       >
         <p>New here? We'll help you create an account in no time!</p>
         <div className="login-options">
-          {/* Wallet connect handled by RainbowKit */}
           <ConnectButton />
-          <button className="twitter-btn" onClick={handleXLogin}>X (Twitter)</button>
+          <button className="twitter-btn" onClick={handleXLogin}><SiX /> (Twitter)</button>
         </div>
-        {/* Show wallet address if connected */}
-        {/* {isConnected && (
-          <div style={{ marginTop: 12, color: '#2563eb', fontWeight: 500 }}>
-            Wallet: {address}
-          </div>
-        )} */}
       </Modal>
     </div>
   );

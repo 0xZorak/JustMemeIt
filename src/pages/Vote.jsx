@@ -192,13 +192,9 @@ const Vote = () => {
                   </div>
                 )}
               </div>
-              <button
-                className="login-btn wallet"
-                onClick={isConnected ? undefined : guardedToggleLoginModal}
-              >
-                Connect wallet
-              </button>
+             <ConnectButton/>
             </>
+
           )}
           {!xUser && !isConnected && (
             <button
@@ -244,7 +240,7 @@ const Vote = () => {
         <p>New here? We'll help you create an account in no time!</p>
         <div className="login-options">
           <ConnectButton />
-          <button className="twitter-btn" onClick={handleXLogin}><SiX /> (Twitter)</button>
+          <button className="twitter-btn" onClick={handleXLogin}><SiX /> </button>
         </div>
       </Modal>
     </div>

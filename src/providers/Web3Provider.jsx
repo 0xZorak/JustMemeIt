@@ -2,7 +2,6 @@ import "@rainbow-me/rainbowkit/styles.css";
 import {
   getDefaultWallets,
   RainbowKitProvider,
-  darkTheme,
   lightTheme,
 } from "@rainbow-me/rainbowkit";
 import { createConfig, WagmiProvider, http } from "wagmi";

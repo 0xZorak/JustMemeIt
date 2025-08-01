@@ -4,6 +4,8 @@ import memesData from "../data/memes.json";
 import "../styles/vote.css";
 import { FaThLarge, FaList } from "react-icons/fa";
 import Header from "../components/Header";
+import { useAccount, useSendTransaction, useSwitchChain, useChainId } from "wagmi";
+import { parseEther } from "viem";
 
 const X_USER_KEY = "xUser";
 
@@ -12,6 +14,7 @@ const Vote = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [view, setView] = useState("grid");
   const [selectedMeme, setSelectedMeme] = useState(null);
+  const [memeVotes, setMemeVotes] = useState({}); // { memeId: voteCount }
   const dropdownRef = useRef(null);
 
   // On mount: check for X login in URL or localStorage
@@ -48,11 +51,79 @@ const Vote = () => {
     };
   }, [showDropdown]);
 
+  const VOTE_RECEIVER = "0x6B7e9c7ecC32ECC2Ee7882b35f9A601BbaF5578F"; 
+
+  const { address, isConnected } = useAccount();
+  const { sendTransactionAsync } = useSendTransaction();
+  const { switchChain } = useSwitchChain();
+  const chainId = useChainId();
+
   // Dummy vote handler
-  const handleVote = () => {
-    alert("Vote submitted!");
-    setSelectedMeme(null);
+  const handleVote = async (voteCount, totalSei) => {
+    if (!isConnected) {
+      alert("Connect your wallet first!");
+      return;
+    }
+    if (chainId !== 1329) {
+      switchChain?.({ chainId: 1329 });
+      alert("Please switch your wallet to SEI EVM network.");
+      return;
+    }
+    try {
+      const totalSei = selectedMeme.price_in_sei * voteCount;
+      const value = parseEther(totalSei.toString());
+      const tx = await sendTransactionAsync({
+        to: VOTE_RECEIVER,
+        value,
+        chainId: 1329,
+      });
+      console.log("Transaction result:", tx);
+
+      const txHash = typeof tx === "string" ? tx : tx?.hash;
+      if (!txHash) {
+        alert("Transaction failed: No txHash returned");
+        return;
+      }
+
+      const res = await fetch('http://localhost:4000/api/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          memeName: selectedMeme.memeName,
+          txHash,
+          voter: address,
+          votes: voteCount,
+          value: value.toString(),
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setMemeVotes((prev) => ({
+          ...prev,
+          [selectedMeme.memeName]: data.votes,
+        }));
+        alert(`You voted ${voteCount} times for a total of ${totalSei} SEI!`);
+      } else {
+        alert("Vote not counted: " + (data.error || "Unknown error"));
+      }
+      setSelectedMeme(null);
+    } catch (err) {
+      alert("Transaction failed: " + err.message);
+    }
   };
+
+  useEffect(() => {
+    memesData.forEach(meme => {
+      fetch(`http://localhost:4000/api/vote/${meme.memeName}`)
+        .then(res => res.json())
+        .then(data => {
+          setMemeVotes(prev => ({
+            ...prev,
+            [meme.memeName]: data.votes,
+          }));
+        });
+    });
+  }, []);
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
@@ -140,7 +211,7 @@ const Vote = () => {
             >
               <img
                 src={meme.meme_image}
-                alt={meme.meme_name}
+                alt={meme.memeName}
                 style={{
                   width: view === "grid" ? 120 : 80,
                   height: view === "grid" ? 120 : 80,
@@ -152,15 +223,13 @@ const Vote = () => {
               />
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 600, fontSize: 18, color: "#fff" }}>
-                  {meme.meme_name}
+                  {meme.memeName}
                 </div>
                 <div style={{ color: "#aaa", fontSize: 14, margin: "6px 0" }}>
                   by {meme.uploader}
                 </div>
-                <div
-                  style={{ color: "#2563eb", fontWeight: 600, fontSize: 16 }}
-                >
-                  {meme.price_in_sei} SEI
+                <div style={{ color: "#2563eb", fontWeight: 600, fontSize: 16 }}>
+                  {meme.price_in_sei} SEI &nbsp;|&nbsp; Votes: {memeVotes[meme.memeName] || 0}
                 </div>
               </div>
             </div>

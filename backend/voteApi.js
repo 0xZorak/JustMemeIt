@@ -3,13 +3,12 @@ const axios = require('axios');
 const Vote = require('./models/Vote');
 const router = express.Router();
 
-const MCP_SERVER_URL = 'http://localhost:5000'; // MCP server endpoint
+const MCP_SERVER_URL = 'http://localhost:3001'; // MCP server endpoint
 
 // POST /api/vote
 router.post('/', async (req, res) => {
   const { memeName, txHash, voter, votes, value } = req.body;
 
-  // Detailed field checker
   if (!memeName) {
     return res.status(400).json({ error: 'Missing or invalid field: memeName' });
   }

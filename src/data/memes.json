@@ -3,78 +3,42 @@
     "uploader": "elonmusk",
     "memeName": "Dogecoin to the Moon",
     "meme_image": "dog.jpg",
-    "price_in_sei": 3.5
+    "price_in_sei": 0.005
   },
   {
     "uploader": "seimemer",
     "memeName": "Sei Speed is Crazy",
     "meme_image": "dog.jpg",
-    "price_in_sei": 2
+    "price_in_sei": 0.005
   },
   {
     "uploader": "funnyfroge",
     "memeName": "WAGMI Vibes Only",
     "meme_image": "dog.jpg",
-    "price_in_sei": 5
+    "price_in_sei": 0.005
   },
   {
     "uploader": "memelord420",
     "memeName": "Crypto Rollercoaster",
     "meme_image": "dog.jpg",
-    "price_in_sei": 0.05
+    "price_in_sei": 0.005
   },
   {
     "uploader": "pixelgiggle",
     "memeName": "Gas Fees in 2023",
     "meme_image": "dog.jpg",
-    "price_in_sei": 4.2
+    "price_in_sei": 0.005
   },
   {
     "uploader": "basedbanana",
     "memeName": "Why I Left Ethereum",
     "meme_image": "dog.jpg",
-    "price_in_sei": 6
+    "price_in_sei": 0.005
   },
   {
     "uploader": "justmemeit_",
     "memeName": "When SEI Finality Hits",
     "meme_image": "dog.jpg",
-    "price_in_sei": 2.8
-  },
-  {
-    "uploader": "memelord420",
-    "memeName": "Crypto Rollercoaster",
-    "meme_image": "dog.jpg",
-    "price_in_sei": 1
-  },
-  {
-    "uploader": "pixelgiggle",
-    "memeName": "Gas Fees in 2023",
-    "meme_image": "dog.jpg",
-    "price_in_sei": 4.2
-  },
-  {
-    "uploader": "basedbanana",
-    "memeName": "Why I Left Ethereum",
-    "meme_image": "dog.jpg",
-    "price_in_sei": 6
-  },
-  {
-    "uploader": "memelord420",
-    "memeName": "Crypto Rollercoaster",
-    "meme_image": "dog.jpg",
-    "price_in_sei": 1
-  },
-  {
-    "uploader": "pixelgiggle",
-    "memeName": "Gas Fees in 2023",
-    "meme_image": "dog.jpg",
-    "price_in_sei": 4.2
-  },
-  {
-    "uploader": "basedbanana",
-    "memeName": "Why I Left Ethereum",
-    "meme_image": "dog.jpg",
-    "price_in_sei": 6
+    "price_in_sei": 0.005
   }
 ]

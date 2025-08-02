@@ -85,6 +85,7 @@ const Vote = () => {
         return;
       }
 
+      // Await and parse the backend response
       const res = await fetch('http://localhost:4000/api/vote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -93,10 +94,11 @@ const Vote = () => {
           txHash,
           voter: address,
           votes: voteCount,
-          value: value.toString(),
+          value: value.toString(), // must be string, in wei
         }),
       });
       const data = await res.json();
+
       if (data.success) {
         setMemeVotes((prev) => ({
           ...prev,

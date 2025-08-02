@@ -13,9 +13,27 @@ const User = () => {
 
   // Load X user from localStorage
   useEffect(() => {
-    const stored = localStorage.getItem(X_USER_KEY);
-    if (stored) setXUser(JSON.parse(stored));
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get("name");
+    const profile_image_url = params.get("profile_image_url");
+    if (name && profile_image_url) {
+      const user = { name, profile_image_url };
+      setXUser(user);
+      localStorage.setItem(X_USER_KEY, JSON.stringify(user));
+      window.history.replaceState({}, document.title, window.location.pathname); // Clean up URL
+    } else {
+      const stored = localStorage.getItem(X_USER_KEY);
+      if (stored) setXUser(JSON.parse(stored));
+    }
   }, []);
+
+  // Reload xUser when modal closes (after X connect)
+  useEffect(() => {
+    if (!isLoginModalOpen) {
+      const stored = localStorage.getItem(X_USER_KEY);
+      if (stored) setXUser(JSON.parse(stored));
+    }
+  }, [isLoginModalOpen]);
 
   // Only allow modal to close if both are connected
   const handleCloseModal = () => {

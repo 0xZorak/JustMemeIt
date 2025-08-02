@@ -24,7 +24,7 @@ function App() {
         <div className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/vote" element={<Vote />} />
+            <Route path="/vote" element={<Vote lightMode={lightMode} />} />
             <Route path="/rank" element={<Rank />} />
             <Route path="/assets" element={<Assets />} />
             <Route path="/user" element={<User />} />

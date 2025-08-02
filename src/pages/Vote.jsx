@@ -9,7 +9,7 @@ import { parseEther } from "viem";
 
 const X_USER_KEY = "xUser";
 
-const Vote = () => {
+const Vote = ({ lightMode }) => {
   const [xUser, setXUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [view, setView] = useState("grid");
@@ -129,8 +129,11 @@ const Vote = () => {
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      <Header />
-      <div className="page-scroll-area">
+      <Header lightMode={lightMode} />
+      <div className="page-scroll-area" style={{
+        background: lightMode ? "#eee" : undefined,
+        minHeight: "100vh"  
+      }}>
         {/* Below header: Title and grid/list toggle */}
         <div
           style={{
@@ -140,22 +143,32 @@ const Vote = () => {
             marginTop: 24,
             marginBottom: 8,
             padding: "0 32px",
+            background: lightMode ? "#eee" : "transparent"
           }}
         >
-          <div style={{ fontSize: 18, color: "#aaa", fontWeight: 600 }}>
-            VOTE FOR YOUR FAVORITE MEME
+          <div style={{
+            fontSize: 18,
+            color: lightMode ? "#222" : "#aaa",
+            fontWeight: 600
+          }}>
+            VOTE FOR YOUR FAVOURITE MEME
           </div>
           <span style={{ display: "flex", gap: 8 }}>
             <button
               aria-label="Grid view"
               style={{
-                background: view === "grid" ? "#2563eb" : "#222",
-                color: view === "grid" ? "#fff" : "#aaa",
+                background: view === "grid"
+                  ? (lightMode ? "#2563eb" : "#2563eb")
+                  : (lightMode ? "#eee" : "#222"), // keep #eee for light mode
+                color: view === "grid"
+                  ? "#fff"
+                  : (lightMode ? "#222" : "#aaa"),
                 border: "none",
                 borderRadius: 6,
                 padding: 6,
                 cursor: "pointer",
                 fontSize: "18px",
+                boxShadow: lightMode ? "0 1px 4px #eee" : undefined
               }}
               onClick={() => setView("grid")}
             >
@@ -164,13 +177,18 @@ const Vote = () => {
             <button
               aria-label="List view"
               style={{
-                background: view === "list" ? "#2563eb" : "#222",
-                color: view === "list" ? "#fff" : "#aaa",
+                background: view === "list"
+                  ? (lightMode ? "#2563eb" : "#2563eb")
+                  : (lightMode ? "#eee" : "#222"), // keep #eee for light mode
+                color: view === "list"
+                  ? "#fff"
+                  : (lightMode ? "#222" : "#aaa"),
                 border: "none",
                 borderRadius: 6,
                 padding: 6,
                 cursor: "pointer",
                 fontSize: "18px",
+                boxShadow: lightMode ? "0 1px 4px #eee" : undefined
               }}
               onClick={() => setView("list")}
             >
@@ -190,13 +208,14 @@ const Vote = () => {
             gap: 24,
             padding: 32,
             paddingTop: 15,
+            background: lightMode ? "#f7f7f7" : undefined
           }}
         >
           {memesData.map((meme, idx) => (
             <div
               key={idx}
               style={{
-                background: "#222222ff",
+                background: lightMode ? "#eee" : "#222222ff", // changed from #fff to #eee
                 borderRadius: 16,
                 padding: 18,
                 marginBottom: view === "list" ? 24 : 0,
@@ -204,10 +223,13 @@ const Vote = () => {
                 flexDirection: view === "grid" ? "column" : "row",
                 alignItems: view === "grid" ? "center" : "flex-start",
                 cursor: "pointer",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
+                boxShadow: lightMode
+                  ? "0 2px 8px rgba(0,0,0,0.04)"
+                  : "0 2px 8px rgba(0,0,0,0.10)",
                 minWidth: 220,
                 maxWidth: view === "grid" ? 320 : "100%",
                 transition: "box-shadow 0.2s",
+                border: lightMode ? "1px solid #eee" : undefined
               }}
               onClick={() => setSelectedMeme(meme)}
             >
@@ -221,16 +243,30 @@ const Vote = () => {
                   objectFit: "cover",
                   marginBottom: view === "grid" ? 16 : 0,
                   marginRight: view === "list" ? 18 : 0,
+                  border: lightMode ? "1px solid #eee" : undefined,
+                  background: lightMode ? "#eee" : "#222" // changed from #fafafa to #eee
                 }}
               />
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 600, fontSize: 18, color: "#fff" }}>
+                <div style={{
+                  fontWeight: 600,
+                  fontSize: 18,
+                  color: lightMode ? "#222" : "#fff"
+                }}>
                   {meme.memeName}
                 </div>
-                <div style={{ color: "#aaa", fontSize: 14, margin: "6px 0" }}>
+                <div style={{
+                  color: lightMode ? "#888" : "#aaa",
+                  fontSize: 14,
+                  margin: "6px 0"
+                }}>
                   by {meme.uploader}
                 </div>
-                <div style={{ color: "#2563eb", fontWeight: 600, fontSize: 16 }}>
+                <div style={{
+                  color: "#2563eb",
+                  fontWeight: 600,
+                  fontSize: 16
+                }}>
                   {meme.price_in_sei} SEI &nbsp;|&nbsp; Votes: {memeVotes[meme.memeName] || 0}
                 </div>
               </div>

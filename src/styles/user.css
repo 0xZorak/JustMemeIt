@@ -123,22 +123,29 @@
 }
 
 .user-avatar-wrapper {
-  width: 120px;
-  height: 120px;
-  background: #fff;
+  width: 140px;           /* or your preferred size */
+  height: 140px;
   border-radius: 50%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0 auto;
+  background: none;       /* Remove background if any */
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
-  overflow: hidden;
 }
 
 .user-avatar {
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 50%;
+  display: block;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
 }
 
 .user-info-list {

@@ -25,12 +25,16 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Missing or invalid field: value' });
   }
 
-  try {
+    try {
+    const chainId = 1329;
+    const to = process.env.VOTE_RECEIVER;
+    const from = voter;
+    console.log("MCP verify payload:", { txHash, chainId, to, from, value });
     const verifyRes = await axios.post(`${MCP_SERVER_URL}/evm/tx/verify`, {
       txHash,
-      chainId: 1329,
-      to: process.env.VOTE_RECEIVER,
-      from: voter,
+      chainId,
+      to,
+      from,
       value,
     });
 

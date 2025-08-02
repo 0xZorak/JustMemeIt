@@ -6,7 +6,7 @@ import Modal from "../components/Modal";
 
 const X_USER_KEY = "xUser";
 
-const Header = () => {
+const Header = ({ lightMode }) => {
   const [xUser, setXUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
@@ -64,7 +64,9 @@ const Header = () => {
         left: 90,
         right: 0,
         zIndex: 100,
-        background: "#181818",
+        background: lightMode ? "#eee" : "#181818", // changed from #fff to #eee
+        color: lightMode ? "#222" : "#fff",
+        borderBottom: lightMode ? "1px solid #eee" : undefined,
       }}
     >
       <span>Just meme it</span>

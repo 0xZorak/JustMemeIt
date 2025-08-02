@@ -21,10 +21,12 @@
 body.light-mode .vote-header {
   background: #eee;
   color: #222;
+ 
 }
 
 body.light-mode .vote-header span {
   color: #222;
+
 }
 .topbar {
   display: flex;

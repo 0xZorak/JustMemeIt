@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import MemeVoteModal from "../components/MemeVoteModal";
-import memesData from "../data/memes.json";
 import "../styles/vote.css";
 import { FaThLarge, FaList } from "react-icons/fa";
 import Header from "../components/Header";
-import { useAccount, useSendTransaction, useSwitchChain, useChainId } from "wagmi";
+import {
+  useAccount,
+  useSendTransaction,
+  useSwitchChain,
+  useChainId,
+} from "wagmi";
 import { parseEther } from "viem";
 
 const X_USER_KEY = "xUser";
@@ -14,16 +18,18 @@ const Vote = ({ lightMode }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [view, setView] = useState("grid");
   const [selectedMeme, setSelectedMeme] = useState(null);
-  const [memeVotes, setMemeVotes] = useState({}); // { memeId: voteCount }
+  const [memeVotes, setMemeVotes] = useState({});
+  const [votingMemes, setVotingMemes] = useState([]);
   const dropdownRef = useRef(null);
 
   // On mount: check for X login in URL or localStorage
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const user_id = params.get("user_id");
     const name = params.get("name");
     const profile_image_url = params.get("profile_image_url");
-    if (name && profile_image_url) {
-      const user = { name, profile_image_url };
+    if (user_id && name && profile_image_url) {
+      const user = { user_id, name, profile_image_url };
       setXUser(user);
       localStorage.setItem(X_USER_KEY, JSON.stringify(user));
       window.history.replaceState({}, document.title, window.location.pathname); // Clean up URL
@@ -51,7 +57,7 @@ const Vote = ({ lightMode }) => {
     };
   }, [showDropdown]);
 
-  const VOTE_RECEIVER = "0x6B7e9c7ecC32ECC2Ee7882b35f9A601BbaF5578F"; 
+  const VOTE_RECEIVER = "0x6B7e9c7ecC32ECC2Ee7882b35f9A601BbaF5578F";
 
   const { address, isConnected } = useAccount();
   const { sendTransactionAsync } = useSendTransaction();
@@ -86,9 +92,9 @@ const Vote = ({ lightMode }) => {
       }
 
       // Await and parse the backend response
-      const res = await fetch('http://localhost:4000/api/vote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("http://localhost:4000/api/vote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           memeName: selectedMeme.memeName,
           txHash,
@@ -102,7 +108,7 @@ const Vote = ({ lightMode }) => {
       if (data.success) {
         setMemeVotes((prev) => ({
           ...prev,
-          [selectedMeme.memeName]: data.votes,
+          [selectedMeme._id]: (prev[selectedMeme._id] || 0) + voteCount,
         }));
         alert(`You voted ${voteCount} times for a total of ${totalSei} SEI!`);
       } else {
@@ -114,31 +120,39 @@ const Vote = ({ lightMode }) => {
     }
   };
 
+  // Fetch voting memes from backend
   useEffect(() => {
-    memesData.forEach(meme => {
-      fetch(`http://localhost:4000/api/vote/${meme.memeName}`)
-        .then(res => res.json())
-        .then(data => {
-          setMemeVotes(prev => ({
-            ...prev,
-            [meme.memeName]: data.votes,
-          }));
-        });
-    });
+    const fetchVotingMemes = () => {
+      fetch("http://localhost:4000/api/vote/voting-memes")
+        .then((res) => res.json())
+        .then((data) => setVotingMemes(data.memes || []));
+    };
+    fetchVotingMemes();
+    const interval = setInterval(fetchVotingMemes, 10000); // every 10s
+    return () => clearInterval(interval);
   }, []);
+
+  // Optionally, fetch votes for each meme if you have a votes API
+  // useEffect(() => {
+  //   votingMemes.forEach(meme => {
+  //     fetch(`http://localhost:4000/api/vote/${meme._id}`)
+  //       .then(res => res.json())
+  //       .then(data => {
+  //         setMemeVotes(prev => ({
+  //           ...prev,
+  //           [meme._id]: data.votes,
+  //         }));
+  //       });
+  //   });
+  // }, [votingMemes]);
 
   return (
     <div style={{ width: "100%", height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column" }}>
       <Header lightMode={lightMode} />
-      <div
-        className="page-scroll-area"
-        style={{
-          background: lightMode ? "#eee" : undefined,
-          flex: 1,
-          overflowY: "auto",
-          minHeight: 0
-        }}
-      >
+      <div className="page-scroll-area" style={{
+        background: lightMode ? "#eee" : undefined,
+        minHeight: "100vh"  
+      }}>
         {/* Below header: Title and grid/list toggle */}
         <div
           style={{
@@ -148,32 +162,37 @@ const Vote = ({ lightMode }) => {
             marginTop: 24,
             marginBottom: 8,
             padding: "0 32px",
-            background: lightMode ? "#eee" : "transparent"
+            background: lightMode ? "#eee" : "transparent",
           }}
         >
-          <div style={{
-            fontSize: 18,
-            color: lightMode ? "#222" : "#aaa",
-            fontWeight: 600
-          }}>
+          <div
+            style={{
+              fontSize: 18,
+              color: lightMode ? "#222" : "#aaa",
+              fontWeight: 600,
+            }}
+          >
             VOTE FOR YOUR FAVOURITE MEME
           </div>
           <span style={{ display: "flex", gap: 8 }}>
             <button
               aria-label="Grid view"
               style={{
-                background: view === "grid"
-                  ? (lightMode ? "#2563eb" : "#2563eb")
-                  : (lightMode ? "#eee" : "#222"), // keep #eee for light mode
-                color: view === "grid"
-                  ? "#fff"
-                  : (lightMode ? "#222" : "#aaa"),
+                background:
+                  view === "grid"
+                    ? lightMode
+                      ? "#2563eb"
+                      : "#2563eb"
+                    : lightMode
+                    ? "#eee"
+                    : "#222",
+                color: view === "grid" ? "#fff" : lightMode ? "#222" : "#aaa",
                 border: "none",
                 borderRadius: 6,
                 padding: 6,
                 cursor: "pointer",
                 fontSize: "18px",
-                boxShadow: lightMode ? "0 1px 4px #eee" : undefined
+                boxShadow: lightMode ? "0 1px 4px #eee" : undefined,
               }}
               onClick={() => setView("grid")}
             >
@@ -182,18 +201,21 @@ const Vote = ({ lightMode }) => {
             <button
               aria-label="List view"
               style={{
-                background: view === "list"
-                  ? (lightMode ? "#2563eb" : "#2563eb")
-                  : (lightMode ? "#eee" : "#222"), // keep #eee for light mode
-                color: view === "list"
-                  ? "#fff"
-                  : (lightMode ? "#222" : "#aaa"),
+                background:
+                  view === "list"
+                    ? lightMode
+                      ? "#2563eb"
+                      : "#2563eb"
+                    : lightMode
+                    ? "#eee"
+                    : "#222",
+                color: view === "list" ? "#fff" : lightMode ? "#222" : "#aaa",
                 border: "none",
                 borderRadius: 6,
                 padding: 6,
                 cursor: "pointer",
                 fontSize: "18px",
-                boxShadow: lightMode ? "0 1px 4px #eee" : undefined
+                boxShadow: lightMode ? "0 1px 4px #eee" : undefined,
               }}
               onClick={() => setView("list")}
             >
@@ -202,77 +224,88 @@ const Vote = ({ lightMode }) => {
           </span>
         </div>
 
-        {/* Meme grid/list */}
+        {/* Meme grid/list - new layout */}
         <div
+          className="vote-page-grid"
           style={{
             display: view === "grid" ? "grid" : "block",
-            gridTemplateColumns: view === "grid" ? "repeat(3, 1fr)" : undefined, // Always 3 columns
+            gridTemplateColumns:
+              view === "grid"
+                ? "repeat(auto-fit, minmax(260px, 1fr))"
+                : undefined,
             gap: 24,
             padding: 32,
             paddingTop: 15,
-            background: lightMode ? "#f7f7f7" : undefined,
-            minHeight: "calc(100vh - 120px)", // Ensure enough height for scrolling
-            boxSizing: "border-box",
-            overflowY: "auto"
+            background: lightMode ? "#f7f7f7" : undefined
           }}
         >
           {memesData.map((meme, idx) => (
             <div
-              key={idx}
+              key={meme._id}
               style={{
-                background: lightMode ? "#eee" : "#222222ff", // changed from #fff to #eee
-                borderRadius: 16,
-                padding: 18,
-                marginBottom: view === "list" ? 24 : 0,
                 display: "flex",
-                flexDirection: view === "grid" ? "column" : "row",
-                alignItems: view === "grid" ? "center" : "flex-start",
+                flexDirection: view === "grid" ? "row" : "row",
+                alignItems: "center",
+                background: "#212122ff",
+                borderRadius: 18,
+                boxShadow: "0 2px 12px #0004",
+                padding: 24,
+                maxHeight: view === "grid" ? 160 : 90,
+                width: view === "grid" ? 360 : "96%",
+                margin: view === "grid" ? "auto" : "0 0 20px 0",
                 cursor: "pointer",
-                boxShadow: lightMode
-                  ? "0 2px 8px rgba(0,0,0,0.04)"
-                  : "0 2px 8px rgba(0,0,0,0.10)",
-                minWidth: 220,
-                maxWidth: view === "grid" ? 320 : "100%",
-                transition: "box-shadow 0.2s",
-                border: lightMode ? "1px solid #eee" : undefined
               }}
               onClick={() => setSelectedMeme(meme)}
             >
               <img
-                src={meme.meme_image}
-                alt={meme.memeName}
+                src={
+                  meme.image_url.startsWith("http")
+                    ? meme.image_url
+                    : `http://localhost:4000${meme.image_url}`
+                }
+                alt={meme.caption}
                 style={{
-                  width: view === "grid" ? 120 : 80,
-                  height: view === "grid" ? 120 : 80,
-                  borderRadius: 12,
+                  width: 110,
+                  height: 110,
+                  borderRadius: 14,
                   objectFit: "cover",
-                  marginBottom: view === "grid" ? 16 : 0,
-                  marginRight: view === "list" ? 18 : 0,
-                  border: lightMode ? "1px solid #eee" : undefined,
-                  background: lightMode ? "#eee" : "#222" // changed from #fafafa to #eee
+                  marginRight: 28,
+                  background: "#222",
+                  border: "2px solid #222",
                 }}
               />
               <div style={{ flex: 1 }}>
-                <div style={{
-                  fontWeight: 600,
-                  fontSize: 18,
-                  color: lightMode ? "#222" : "#fff"
-                }}>
-                  {meme.memeName}
+                <div
+                  style={{
+                    fontWeight: 700,
+                    fontSize: 20,
+                    color: "#fff",
+                    marginBottom: 8,
+                  }}
+                >
+                  {meme.caption}
                 </div>
-                <div style={{
-                  color: lightMode ? "#888" : "#aaa",
-                  fontSize: 14,
-                  margin: "6px 0"
-                }}>
-                  by {meme.uploader}
+                <div style={{ color: "#aaa", fontSize: 15, marginBottom: 8 }}>
+                  by {meme.username || meme.name || "unknown"}
                 </div>
-                <div style={{
-                  color: "#2563eb",
-                  fontWeight: 600,
-                  fontSize: 16
-                }}>
-                  {meme.price_in_sei} SEI &nbsp;|&nbsp; Votes: {memeVotes[meme.memeName] || 0}
+                <div
+                  style={{
+                    color: "#3b82f6",
+                    fontWeight: 600,
+                    fontSize: 15,
+                    marginBottom: 4,
+                  }}
+                >
+                  <img
+                    src="sei_red_symbol.png"
+                    alt=""
+                    style={{
+                      width: 15,
+                      height: 15,
+                      marginRight: 5,
+                    }}
+                  />
+                  0.005 SEI &nbsp;|&nbsp; Votes: {memeVotes[meme._id] ?? meme.votes ?? 0}
                 </div>
               </div>
             </div>
@@ -283,7 +316,17 @@ const Vote = ({ lightMode }) => {
         <MemeVoteModal
           open={!!selectedMeme}
           onClose={() => setSelectedMeme(null)}
-          meme={selectedMeme}
+          meme={
+            selectedMeme && {
+              ...selectedMeme,
+              meme_image: selectedMeme.image_url.startsWith("http")
+                ? selectedMeme.image_url
+                : `http://localhost:4000${selectedMeme.image_url}`,
+              memeName: selectedMeme.caption,
+              uploader: selectedMeme.username || selectedMeme.name || "unknown",
+              price_in_sei: selectedMeme.price_in_sei ?? 0.005, 
+            }
+          }
           onVote={handleVote}
         />
       </div>

@@ -231,3 +231,10 @@ body.light-mode .close-modal {
   height: 100%;
 }
 
+.vote-page-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 32px;
+  padding: 32px 0;
+}
+

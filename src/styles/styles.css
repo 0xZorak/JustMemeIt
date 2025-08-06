@@ -113,6 +113,7 @@ body.light-mode {
   gap: 18px;
   margin-top: auto; /* Push bottom-icons to the bottom */
   margin-bottom: 50px;
+  font-size: 18px;
 }
 
 .sidebar-icon {

@@ -60,7 +60,8 @@ router.get('/callback', async (req, res) => {
     req.session.xUser = userRes.data.data;
 
     // Redirect back to frontend with user info in query (or use session/cookie)
-    res.redirect(`http://localhost:3000/vote?name=${encodeURIComponent(userRes.data.data.name)}&profile_image_url=${encodeURIComponent(userRes.data.data.profile_image_url)}`);
+    const { id, name, profile_image_url, username } = userRes.data.data;
+    res.redirect(`http://localhost:3000/vote?user_id=${id}&name=${encodeURIComponent(name)}&profile_image_url=${encodeURIComponent(profile_image_url)}`);
   } catch (err) {
     res.status(500).send('Twitter login failed');
   }

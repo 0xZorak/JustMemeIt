@@ -1,9 +1,14 @@
 const express = require('express');
 const axios = require('axios');
 const Vote = require('./models/Vote');
+const multer = require('multer');
+const Meme = require('./models/Meme');
+const path = require('path');
+const fs = require('fs');
 const router = express.Router();
 
 const MCP_SERVER_URL = 'http://localhost:3001'; // MCP server endpoint
+const upload = multer({ dest: path.join(__dirname, '../uploads') });
 
 // POST /api/vote
 router.post('/', async (req, res) => {
@@ -57,7 +62,75 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET /api/vote/:memeName
+// Place this FIRST, before any '/:param' routes!
+router.get('/voting-memes', async (req, res) => {
+  const memes = await Meme.find({ in_voting: true }).sort({ created_at: -1 });
+  res.json({ memes });
+});
+
+// POST /api/upload-meme
+router.post('/upload-meme', (req, res, next) => {
+  console.log('Upload request received at', new Date());
+  next();
+}, upload.single('image'), async (req, res) => {
+  try {
+    const { tweet_id, user_id, username, name, profile_image_url, caption } = req.body;
+    if (!req.file) return res.status(400).json({ error: 'No image uploaded' });
+
+    // Ensure user_memes directory exists
+    const userMemesDir = path.join(__dirname, '../public/user_memes');
+    if (!fs.existsSync(userMemesDir)) fs.mkdirSync(userMemesDir, { recursive: true });
+
+    // Move file to public/user_memes
+    const ext = path.extname(req.file.originalname) || '.jpg';
+    const newFilename = `${Date.now()}_${req.file.filename}${ext}`;
+    const newPath = path.join(userMemesDir, newFilename);
+    fs.renameSync(req.file.path, newPath);
+
+    const meme = await Meme.create({
+      tweet_id,
+      user_id,
+      username,
+      name,
+      profile_image_url,
+      caption,
+      image_url: `/user_memes/${newFilename}`
+    });
+    res.json({ success: true, meme });
+  } catch (err) {
+    console.error('Upload error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/user-memes/:user_id
+router.get('/user-memes/:user_id', async (req, res) => {
+  const memes = await Meme.find({ user_id: req.params.user_id }).sort({ created_at: -1 });
+  res.json({ memes });
+});
+
+// POST /api/send-for-voting
+router.post('/send-for-voting', async (req, res) => {
+  const { meme_id, caption, username, name } = req.body;
+  try {
+    const meme = await Meme.findByIdAndUpdate(
+      meme_id,
+      {
+        in_voting: true,
+        ...(caption && { caption }),
+        ...(username && { username }),
+        ...(name && { name }),
+      },
+      { new: true }
+    );
+    if (!meme) return res.status(404).json({ error: 'Meme not found' });
+    res.json({ success: true, meme });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// This should be LAST among GETs so it doesn't catch everything
 router.get('/:memeName', async (req, res) => {
   const { memeName } = req.params;
   const totalVotes = await Vote.aggregate([
@@ -65,6 +138,32 @@ router.get('/:memeName', async (req, res) => {
     { $group: { _id: '$memeName', votes: { $sum: '$votes' } } }
   ]);
   res.json({ votes: totalVotes[0]?.votes || 0 });
+});
+
+// Delete meme
+router.delete('/delete-meme/:meme_id', async (req, res) => {
+  try {
+    const meme = await Meme.findByIdAndDelete(req.params.meme_id);
+    if (!meme) return res.status(404).json({ error: 'Meme not found' });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update meme caption
+router.patch('/update-caption/:meme_id', async (req, res) => {
+  try {
+    const meme = await Meme.findByIdAndUpdate(
+      req.params.meme_id,
+      { caption: req.body.caption },
+      { new: true }
+    );
+    if (!meme) return res.status(404).json({ error: 'Meme not found' });
+    res.json({ success: true, meme });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;

@@ -31,9 +31,9 @@ const Sidebar = ({ lightMode, toggleMode }) => {
         </Link>
       </div>
       <div className="bottom-icons">
-        <button className="toggle-mode" id="toggleModeBtn" type="button" onClick={toggleMode}>
+        {/* <button className="toggle-mode" id="toggleModeBtn" type="button" onClick={toggleMode}>
           <i className={`fa-solid ${lightMode ? 'fa-moon' : 'fa-sun'}`}></i>
-        </button>
+        </button> */}
         <a href="https://t.me/yourusername" target="_blank" rel="noopener noreferrer">
           <i className="fa-brands fa-telegram"></i>
         </a>

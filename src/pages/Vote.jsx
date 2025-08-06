@@ -20,6 +20,7 @@ const Vote = ({ lightMode }) => {
   const [selectedMeme, setSelectedMeme] = useState(null);
   const [memeVotes, setMemeVotes] = useState({});
   const [votingMemes, setVotingMemes] = useState([]);
+  const [memesData, setMemesData] = useState([]); // <-- Add this line
   const dropdownRef = useRef(null);
 
   // On mount: check for X login in URL or localStorage

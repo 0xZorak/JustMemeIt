@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/user.css';
+import { LuWallet } from 'react-icons/lu';
+import { FaTrash, FaTrashAlt } from 'react-icons/fa';
+import Modal from '../components/Modal';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
-import Modal from '../components/Modal';
 
 const X_USER_KEY = "xUser";
 
 const User = () => {
-  const [xUser, setXUser] = useState(null);
+  const [userMemes, setUserMemes] = useState([]);
+  const [selectedMemeId, setSelectedMemeId] = useState(null);
+  const [editCaption, setEditCaption] = useState("");
+  const [hoveredTrash, setHoveredTrash] = useState(null);
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  const [avatar, setAvatar] = useState("/images/avatar-placeholder.png");
+  const [xUser, setXUser] = useState(null);
   const { address, isConnected } = useAccount();
 
   // Load X user from localStorage
@@ -49,9 +57,6 @@ const User = () => {
   const handleCloseModal = () => {
     if (xUser && isConnected) setLoginModalOpen(false);
   };
-
-  // Show unlock screen if not both connected
-  const needsUnlock = !(xUser && isConnected);
 
   // Select meme for voting
   const handleSelectMeme = (meme) => {
@@ -116,6 +121,9 @@ const User = () => {
       );
     }
   };
+
+  // Use this computed value instead:
+  const needsUnlock = !(xUser && isConnected);
 
   return (
     <div className="user-page">

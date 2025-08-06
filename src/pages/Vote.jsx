@@ -20,7 +20,6 @@ const Vote = ({ lightMode }) => {
   const [selectedMeme, setSelectedMeme] = useState(null);
   const [memeVotes, setMemeVotes] = useState({});
   const [votingMemes, setVotingMemes] = useState([]);
-  const [memesData, setMemesData] = useState([]); // <-- Add this line
   const dropdownRef = useRef(null);
 
   // On mount: check for X login in URL or localStorage
@@ -77,7 +76,7 @@ const Vote = ({ lightMode }) => {
       return;
     }
     try {
-      const totalSei = selectedMeme.price_in_sei * voteCount;
+      // Use totalSei as passed from the modal, do not recalculate
       const value = parseEther(totalSei.toString());
       const tx = await sendTransactionAsync({
         to: VOTE_RECEIVER,
@@ -97,7 +96,7 @@ const Vote = ({ lightMode }) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          memeName: selectedMeme.memeName,
+          memeName: selectedMeme.caption, 
           txHash,
           voter: address,
           votes: voteCount,
@@ -148,13 +147,16 @@ const Vote = ({ lightMode }) => {
   // }, [votingMemes]);
 
   return (
-    <div style={{ width: "100%", height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column" }}>
+    <div style={{ width: "100%", height: "100%" }}>
       <Header lightMode={lightMode} />
-      <div className="page-scroll-area" style={{
-        background: lightMode ? "#eee" : undefined,
-        minHeight: "100vh"  
-      }}>
-        {/* Below header: Title and grid/list toggle */}
+      <div
+        className="page-scroll-area"
+        style={{
+          background: lightMode ? "#eee" : undefined,
+          minHeight: "100vh",
+        }}
+      >
+        {/* Title and grid/list toggle */}
         <div
           style={{
             display: "flex",
@@ -232,15 +234,18 @@ const Vote = ({ lightMode }) => {
             display: view === "grid" ? "grid" : "block",
             gridTemplateColumns:
               view === "grid"
-                ? "repeat(auto-fit, minmax(260px, 1fr))"
+                ? "repeat(auto-fit, minmax(360px, 1fr))"
                 : undefined,
-            gap: 24,
-            padding: 32,
-            paddingTop: 15,
-            background: lightMode ? "#f7f7f7" : undefined
+            gap: 32,
+            padding: "32px 20px",
           }}
         >
-          {memesData.map((meme, idx) => (
+          {votingMemes.length === 0 && (
+            <div style={{ color: "#888", fontSize: 18, textAlign: "center" }}>
+              No memes in voting round yet.
+            </div>
+          )}
+          {votingMemes.map((meme) => (
             <div
               key={meme._id}
               style={{
@@ -306,7 +311,8 @@ const Vote = ({ lightMode }) => {
                       marginRight: 5,
                     }}
                   />
-                  0.005 SEI &nbsp;|&nbsp; Votes: {memeVotes[meme._id] ?? meme.votes ?? 0}
+                  0.005 SEI &nbsp;|&nbsp; Votes:{" "}
+                  {memeVotes[meme._id] ?? meme.votes ?? 0}
                 </div>
               </div>
             </div>
@@ -323,9 +329,9 @@ const Vote = ({ lightMode }) => {
               meme_image: selectedMeme.image_url.startsWith("http")
                 ? selectedMeme.image_url
                 : `http://localhost:4000${selectedMeme.image_url}`,
-              memeName: selectedMeme.caption,
+              memeName: selectedMeme.caption, 
               uploader: selectedMeme.username || selectedMeme.name || "unknown",
-              price_in_sei: selectedMeme.price_in_sei ?? 0.005, 
+              price_in_sei: Number(selectedMeme.price_in_sei) || 0.005,
             }
           }
           onVote={handleVote}

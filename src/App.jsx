@@ -17,12 +17,15 @@ function App() {
 
   const toggleMode = () => setLightMode((prev) => !prev);
 
+
   return (
     <Router>
       <div className="app-container">
         <Sidebar lightMode={lightMode} toggleMode={toggleMode} />
         <div className="main-content">
           <Routes>
+            
+{/* <Home lightMode={lightMode} /> */}
             <Route path="/" element={<Home />} />
             <Route path="/vote" element={<Vote lightMode={lightMode} />} />
             <Route path="/rank" element={<Rank />} />

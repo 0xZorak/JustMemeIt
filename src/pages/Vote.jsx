@@ -128,12 +128,17 @@ const Vote = ({ lightMode }) => {
   }, []);
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <div style={{ width: "100%", height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column" }}>
       <Header lightMode={lightMode} />
-      <div className="page-scroll-area" style={{
-        background: lightMode ? "#eee" : undefined,
-        minHeight: "100vh"  
-      }}>
+      <div
+        className="page-scroll-area"
+        style={{
+          background: lightMode ? "#eee" : undefined,
+          flex: 1,
+          overflowY: "auto",
+          minHeight: 0
+        }}
+      >
         {/* Below header: Title and grid/list toggle */}
         <div
           style={{
@@ -201,14 +206,14 @@ const Vote = ({ lightMode }) => {
         <div
           style={{
             display: view === "grid" ? "grid" : "block",
-            gridTemplateColumns:
-              view === "grid"
-                ? "repeat(auto-fit, minmax(260px, 1fr))"
-                : undefined,
+            gridTemplateColumns: view === "grid" ? "repeat(3, 1fr)" : undefined, // Always 3 columns
             gap: 24,
             padding: 32,
             paddingTop: 15,
-            background: lightMode ? "#f7f7f7" : undefined
+            background: lightMode ? "#f7f7f7" : undefined,
+            minHeight: "calc(100vh - 120px)", // Ensure enough height for scrolling
+            boxSizing: "border-box",
+            overflowY: "auto"
           }}
         >
           {memesData.map((meme, idx) => (

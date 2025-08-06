@@ -23,6 +23,8 @@ const REDIRECT_URI = process.env.TWITTER_REDIRECT_URI;
 
 // Step 1: Redirect user to Twitter for login
 router.get('/login', (req, res) => {
+  const { redirect } = req.query;
+  req.session.oauthRedirect = redirect || '/vote'; // default to /vote
   const url = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=tweet.read users.read offline.access&state=state&code_challenge=challenge&code_challenge_method=plain`;
   res.redirect(url);
 });

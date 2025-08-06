@@ -3,12 +3,15 @@ import '../styles/user.css';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 import Modal from '../components/Modal';
+import avatar from '../images/avatar.png';
+import { LuWallet } from "react-icons/lu"; 
 
 const X_USER_KEY = 'xUser';
 
 const User = () => {
   const [xUser, setXUser] = useState(null);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
   const { address, isConnected } = useAccount();
 
   // Load X user from localStorage
@@ -53,14 +56,14 @@ const User = () => {
               <div className="profile-title">Profile</div>
               <div className="user-avatar-wrapper">
                 <img
-                  src="/images/avatar-placeholder.png"
+                  src={avatar}
                   alt="avatar"
                   className="user-avatar"
                 />
               </div>
               <div className="user-info-list">
                 <div className="user-info-row">Name: *****</div>
-                <div className="user-info-row">Wallet: *****</div>
+                <div className="user-info-row"><LuWallet />*****</div>
               </div>
             </div>
             <div className="unlock-section">
@@ -83,7 +86,7 @@ const User = () => {
           >
             <div className="login-options">
               <ConnectButton />
-              <button className="twitter-btn" onClick={() => window.location.href = 'http://localhost:4000/auth/x/login'}>
+              <button className="twitter-btn" onClick={() => window.location.href = 'http://localhost:4000/auth/x/login?redirect=/user'}>
                 Connect X
               </button>
             </div>
@@ -105,15 +108,12 @@ const User = () => {
               />
             </div>
             <div className="user-info-list">
-              <div className="user-info-row">Name:  {xUser.name}</div>
-              <div className="user-info-row">Wallet: {address}</div>
+              <div className="user-info-row">{xUser.name}</div>
+              <div className="user-info-row"><LuWallet /> {address}</div>
             </div>
             <button
               className="logout-btn"
-              onClick={() => {
-                localStorage.removeItem('xUser');
-                window.location.reload();
-              }}
+              onClick={() => setLogoutModalOpen(true)}
             >
               Logout
             </button>
@@ -125,6 +125,45 @@ const User = () => {
           </div>
         </div>
       )}
+      <Modal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setLogoutModalOpen(false)}
+        title="Log out"
+        showOK={false}
+      >
+        <div className="logout-options login-options">
+          <button
+            className="logout-main-btn unlock-main-btn"
+            onClick={() => {
+              localStorage.clear();
+              setLogoutModalOpen(false);
+              window.location.reload();
+            }}
+          >
+            Log out from X
+          </button>
+          <button
+            className="logout-main-btn unlock-main-btn"
+            onClick={() => {
+              localStorage.clear();
+              setLogoutModalOpen(false);
+              window.location.reload();
+            }}
+          >
+            Log out from Wallet
+          </button>
+          <button
+            className="logout-main-btn unlock-main-btn"
+            onClick={() => {
+              localStorage.clear();
+              setLogoutModalOpen(false);
+              window.location.reload();
+            }}
+          >
+            Log out from Both
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

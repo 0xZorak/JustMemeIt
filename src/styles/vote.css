@@ -224,4 +224,10 @@ body.light-mode .close-modal {
   border: 2px solid #fff;
   cursor: pointer;
 }
+.page-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  height: 100%;
+}
 

@@ -98,7 +98,8 @@ const Vote = ({ lightMode }) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          memeName: selectedMeme.caption, 
+          memeId: selectedMeme._id,
+          memeName: selectedMeme.caption,
           txHash,
           voter: address,
           votes: voteCount,
@@ -322,8 +323,7 @@ const Vote = ({ lightMode }) => {
                       marginRight: 5,
                     }}
                   />
-                  0.005 SEI &nbsp;|&nbsp; Votes:{" "}
-                  {memeVotes[meme._id] ?? meme.votes ?? 0}
+                  0.005 SEI &nbsp;|&nbsp; Votes: {meme.votes ?? 0}
                 </div>
               </div>
             </div>

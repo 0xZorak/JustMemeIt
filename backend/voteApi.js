@@ -12,7 +12,7 @@ const upload = multer({ dest: path.join(__dirname, '../uploads') });
 
 // POST /api/vote
 router.post('/', async (req, res) => {
-  const { memeName, txHash, voter, votes, value } = req.body;
+  const { memeId, memeName, txHash, voter, votes, value } = req.body;
 
   if (!memeName) {
     return res.status(400).json({ error: 'Missing or invalid field: memeName' });
@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
     }
 
     // Save vote to DB
-    await Vote.create({ memeName, voter, txHash, votes });
+    await Vote.create({ memeId, memeName, voter, txHash, votes });
     // Aggregate total votes for meme
     const totalVotes = await Vote.aggregate([
       { $match: { memeName } },
@@ -62,10 +62,18 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Place this FIRST, before any '/:param' routes!
 router.get('/voting-memes', async (req, res) => {
   const memes = await Meme.find({ in_voting: true }).sort({ created_at: -1 });
-  res.json({ memes });
+  const votes = await Vote.aggregate([
+    { $group: { _id: "$memeId", votes: { $sum: "$votes" } } }
+  ]);
+  const voteMap = {};
+  votes.forEach(v => { voteMap[v._id?.toString()] = v.votes; });
+  const memesWithVotes = memes.map(meme => ({
+    ...meme.toObject(),
+    votes: voteMap[meme._id.toString()] || 0
+  }));
+  res.json({ memes: memesWithVotes });
 });
 
 // POST /api/upload-meme

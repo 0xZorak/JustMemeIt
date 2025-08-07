@@ -3,6 +3,7 @@ import { SiX } from "react-icons/si";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import Modal from "../components/Modal";
+import { useModal } from "../context/ModalContext";
 
 const X_USER_KEY = "xUser";
 
@@ -13,6 +14,7 @@ const Header = ({ lightMode }) => {
   const { isConnected } = useAccount();
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isHowToPlayModalOpen, setHowToPlayModalOpen] = useState(false);
+  const { setModalOpen } = useModal();
 
   useEffect(() => {
     const stored = localStorage.getItem(X_USER_KEY);
@@ -55,6 +57,11 @@ const Header = ({ lightMode }) => {
     if (!xUser && !isConnected) setLoginModalOpen((open) => !open);
   };
 
+  useEffect(() => {
+    setModalOpen(isHowToPlayModalOpen);
+    return () => setModalOpen(false);
+  }, [isHowToPlayModalOpen, setModalOpen]);
+
   return (
     <div
       className="vote-header"
@@ -90,7 +97,7 @@ const Header = ({ lightMode }) => {
               ref={dropdownRef}
             >
               <img
-                src={xUser.profile_image_url}
+                src={xUser.profile_image_url.replace('_normal', '_400x400')}
                 alt="X Profile"
                 className="x-profile-img"
                 title="Account"
@@ -150,7 +157,7 @@ const Header = ({ lightMode }) => {
               ref={dropdownRef}
             >
               <img
-                src={xUser.profile_image_url}
+                src={xUser.profile_image_url.replace('_normal', '_400x400')}
                 alt="X Profile"
                 className="x-profile-img"
                 title="Account"

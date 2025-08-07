@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ModalProvider } from './context/ModalContext';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import Vote from './pages/Vote';
@@ -19,22 +20,22 @@ function App() {
 
 
   return (
-    <Router>
-      <div className="app-container">
-        <Sidebar lightMode={lightMode} toggleMode={toggleMode} />
-        <div className="main-content">
-          <Routes>
-            
-{/* <Home lightMode={lightMode} /> */}
-            <Route path="/" element={<Home />} />
-            <Route path="/vote" element={<Vote lightMode={lightMode} />} />
-            <Route path="/rank" element={<Rank />} />
-            <Route path="/assets" element={<Assets />} />
-            <Route path="/user" element={<User />} />
-          </Routes>
+    <ModalProvider>
+      <Router>
+        <div className="app-container">
+          <Sidebar lightMode={lightMode} toggleMode={toggleMode} />
+          <div className="main-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/vote" element={<Vote lightMode={lightMode} />} />
+              <Route path="/rank" element={<Rank />} />
+              <Route path="/assets" element={<Assets />} />
+              <Route path="/user" element={<User />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </ModalProvider>
   );
 }
 

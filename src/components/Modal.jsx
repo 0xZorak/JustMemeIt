@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import './Modal.css'; // Assuming you have a separate CSS file for modal styles
+import { useModal } from '../context/ModalContext';
 
 const Modal = ({ isOpen, onClose, title, children }) => {
+  const { setModalOpen } = useModal();
+
+  useEffect(() => {
+    setModalOpen(isOpen);
+    return () => setModalOpen(false);
+  }, [isOpen, setModalOpen]);
+
   if (!isOpen) return null;
 
   return (

@@ -22,7 +22,7 @@ const Home = ({ lightMode }) => {
       scaleMobile: 1.0,
       color: lightMode ? 0x222222 : 0xffffff,
       color2: lightMode ? 0x222222 : 0xffffff,
-      backgroundColor: lightMode ? 0xeeeeee : 0x000000,
+      backgroundColor:0x181818,
       size: 1.2,
       points: 12.0,
     });

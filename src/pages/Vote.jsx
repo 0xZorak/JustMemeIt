@@ -10,10 +10,12 @@ import {
   useChainId,
 } from "wagmi";
 import { parseEther } from "viem";
+import { useModal } from "../context/ModalContext";
 
 const X_USER_KEY = "xUser";
 
 const Vote = ({ lightMode }) => {
+  const { modalOpen } = useModal();
   const [xUser, setXUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [view, setView] = useState("grid");
@@ -154,6 +156,8 @@ const Vote = ({ lightMode }) => {
         style={{
           background: lightMode ? "#eee" : undefined,
           minHeight: "100vh",
+          filter: modalOpen ? "blur(6px)" : "none",
+          transition: "filter 0.2s",
         }}
       >
         {/* Title and grid/list toggle */}
@@ -287,9 +291,16 @@ const Vote = ({ lightMode }) => {
                     fontSize: 20,
                     color: "#fff",
                     marginBottom: 8,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    maxWidth: 200, // adjust as needed for your layout
                   }}
+                  title={meme.caption.length > 120 ? meme.caption : undefined} // show full caption on hover if truncated
                 >
-                  {meme.caption}
+                  {meme.caption.length > 120
+                    ? meme.caption.slice(0, 117) + "..."
+                    : meme.caption}
                 </div>
                 <div style={{ color: "#aaa", fontSize: 15, marginBottom: 8 }}>
                   by {meme.username || meme.name || "unknown"}
@@ -318,25 +329,25 @@ const Vote = ({ lightMode }) => {
             </div>
           ))}
         </div>
-
-        {/* Meme modal */}
-        <MemeVoteModal
-          open={!!selectedMeme}
-          onClose={() => setSelectedMeme(null)}
-          meme={
-            selectedMeme && {
-              ...selectedMeme,
-              meme_image: selectedMeme.image_url.startsWith("http")
-                ? selectedMeme.image_url
-                : `http://localhost:4000${selectedMeme.image_url}`,
-              memeName: selectedMeme.caption, 
-              uploader: selectedMeme.username || selectedMeme.name || "unknown",
-              price_in_sei: Number(selectedMeme.price_in_sei) || 0.005,
-            }
-          }
-          onVote={handleVote}
-        />
       </div>
+
+      {/* Meme modal */}
+      <MemeVoteModal
+        open={!!selectedMeme}
+        onClose={() => setSelectedMeme(null)}
+        meme={
+          selectedMeme && {
+            ...selectedMeme,
+            meme_image: selectedMeme.image_url.startsWith("http")
+              ? selectedMeme.image_url
+              : `http://localhost:4000${selectedMeme.image_url}`,
+            memeName: selectedMeme.caption, 
+            uploader: selectedMeme.username || selectedMeme.name || "unknown",
+            price_in_sei: Number(selectedMeme.price_in_sei) || 0.005,
+          }
+        }
+        onVote={handleVote}
+      />
     </div>
   );
 };

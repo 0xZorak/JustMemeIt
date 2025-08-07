@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
+import { useModal } from "../context/ModalContext";
 
 const MemeVoteModal = ({ open, onClose, meme, onVote }) => {
+  const { setModalOpen } = useModal();
   const [voteCount, setVoteCount] = useState(1);
+
+  useEffect(() => {
+    setModalOpen(open);
+    return () => setModalOpen(false);
+  }, [open, setModalOpen]);
 
   useEffect(() => {
     setVoteCount(1);

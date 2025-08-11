@@ -219,8 +219,8 @@ body.light-mode .vote-header span {
 .page-scroll-area {
   flex: 1;
   overflow-y: auto;
-  min-height: 0;
-  height: 100%;
+  /* min-height: 0; */
+  /* height: 100%; */
 }
 
 .vote-page-grid {

@@ -22,7 +22,7 @@ const Sidebar = ({ lightMode, toggleMode }) => {
         </Link>
         <Link className="sidebar-icon" to="/rank">
           <i className="fa-solid fa-trophy"></i>
-          <span>Rank</span>
+          <span>Update</span>
         </Link>
         <Link className="sidebar-icon" to="/assets">
           <i className="fa-solid fa-coins"></i>
@@ -37,7 +37,7 @@ const Sidebar = ({ lightMode, toggleMode }) => {
         <a href="https://t.me/yourusername" target="_blank" rel="noopener noreferrer">
           <i className="fa-solid fa-book"></i>
         </a>
-        <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer">
+        <a href="https://x.com/justmemeit_" target="_blank" rel="noopener noreferrer">
           {/* <i className="fa-brands fa-twitter"></i> */}
           <SiX />
         </a>

@@ -242,7 +242,7 @@ const Vote = ({ lightMode }) => {
                 ? "repeat(auto-fit, minmax(360px, 1fr))"
                 : undefined,
             gap: 32,
-            padding: "32px 20px",
+            padding: "32px 20px 100px 20px", 
           }}
         >
           {votingMemes.length === 0 && (

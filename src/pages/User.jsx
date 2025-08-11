@@ -148,8 +148,8 @@ const { modalOpen } = useModal();
                   />
                 </div>
                 <div className="user-info-list">
-                  <div className="user-info-row"><CgProfile />*****</div>
-                  <div className="user-info-row"><LuWallet />*****</div>
+                  <div className="user-info-row"><CgProfile /> : *****</div>
+                  <div className="user-info-row"><LuWallet /> : *****</div>
                 </div>
               </div>
               <div className="unlock-section">
@@ -185,8 +185,8 @@ const { modalOpen } = useModal();
                 />
               </div>
               <div className="user-info-list">
-                <div className="user-info-row"><CgProfile /> {xUser.name}</div>
-                <div className="user-info-row"><LuWallet /> {address}</div>
+                <div className="user-info-row"><CgProfile /> : {xUser.name}</div>
+                <div className="user-info-row"><LuWallet /> : {address}</div>
               </div>
              <button
                 className="logout-btn"
@@ -225,7 +225,7 @@ const { modalOpen } = useModal();
                           style={{
                             width: "100%",
                             aspectRatio: "1/1",
-                            // objectFit: "cover",
+                            objectFit: "cover",
                             borderRadius: 0,
                             display: "block"
                           }}

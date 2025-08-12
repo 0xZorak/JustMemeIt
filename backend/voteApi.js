@@ -3,6 +3,7 @@ const axios = require('axios');
 const Vote = require('./models/Vote');
 const multer = require('multer');
 const Meme = require('./models/Meme');
+const Winner = require('./models/Winner');
 const path = require('path');
 const fs = require('fs');
 const router = express.Router();
@@ -138,16 +139,6 @@ router.post('/send-for-voting', async (req, res) => {
   }
 });
 
-// This should be LAST among GETs so it doesn't catch everything
-router.get('/:memeName', async (req, res) => {
-  const { memeName } = req.params;
-  const totalVotes = await Vote.aggregate([
-    { $match: { memeName } },
-    { $group: { _id: '$memeName', votes: { $sum: '$votes' } } }
-  ]);
-  res.json({ votes: totalVotes[0]?.votes || 0 });
-});
-
 // Delete meme
 router.delete('/delete-meme/:meme_id', async (req, res) => {
   try {
@@ -172,6 +163,74 @@ router.patch('/update-caption/:meme_id', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// GET /api/vote/winner
+router.get('/winner', async (req, res) => {
+  try {
+    // Return all winners, latest first
+    const winners = await Winner.find().sort({ timestamp: -1 });
+    res.json({ winners });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/vote/reset-week
+router.post('/reset-week', async (req, res) => {
+  try {
+    // Find winner first
+    const memes = await Meme.find({ in_voting: true });
+    if (memes.length) {
+      const votes = await Vote.aggregate([
+        { $group: { _id: "$memeId", votes: { $sum: "$votes" } } }
+      ]);
+      const voteMap = {};
+      votes.forEach(v => { voteMap[v._id?.toString()] = v.votes; });
+
+      let winner = memes[0];
+      let maxVotes = voteMap[winner._id.toString()] || 0;
+      memes.forEach(meme => {
+        const v = voteMap[meme._id.toString()] || 0;
+        if (v > maxVotes) {
+          winner = meme;
+          maxVotes = v;
+        }
+      });
+
+      // Save winner to Winner collection
+      await Winner.create({
+        memeId: winner._id,
+        avatar: winner.profile_image_url || "/images/avatar.png",
+        name: winner.name || winner.username || "unknown",
+        username: winner.username || "",
+        meme: winner.caption,
+        image_url: winner.image_url,
+        rank: 1,
+        votes: maxVotes,
+        xLink: winner.tweet_id ? `https://x.com/i/status/${winner.tweet_id}` : "",
+        week: new Date().toISOString().slice(0, 10)
+      });
+    }
+
+    // Delete all memes in voting and their votes
+    const memeIds = memes.map(m => m._id);
+    await Vote.deleteMany({ memeId: { $in: memeIds } });
+    await Meme.deleteMany({ in_voting: true });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// This should be LAST among GETs so it doesn't catch everything
+router.get('/:memeName', async (req, res) => {
+  const { memeName } = req.params;
+  const totalVotes = await Vote.aggregate([
+    { $match: { memeName } },
+    { $group: { _id: '$memeName', votes: { $sum: '$votes' } } }
+  ]);
+  res.json({ votes: totalVotes[0]?.votes || 0 });
 });
 
 module.exports = router;

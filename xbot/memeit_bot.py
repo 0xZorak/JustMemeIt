@@ -6,6 +6,7 @@ import random
 import requests
 from dotenv import load_dotenv
 import traceback
+from ai_utils import get_image_caption, generate_funny_reply
 
 load_dotenv(dotenv_path=".env")
 
@@ -15,7 +16,7 @@ access_token = os.getenv('ACCESS_TOKEN')
 access_token_secret = os.getenv('ACCESS_TOKEN_SECRET')
 bearer_token = os.getenv('BEARER_TOKEN')
 bot_user_id = os.getenv('BOT_USER_ID')
-backend_upload_url = os.getenv('BACKEND_UPLOAD_URL')
+backend_upload_url = os.getenv('BACKEND_UPLOAD_URL', 'http://host.docker.internal:4000/api/vote/upload-meme')
 
 client = tweepy.Client(
     bearer_token=bearer_token,
@@ -181,13 +182,32 @@ def process_mentions():
                         filename = f"tweet_{parent_tweet_id or tweet.id}.jpg"
                         local_path = download_image(image_url, filename)
                         if local_path:
-                            unique_reply = f"memeing it! #{random.randint(1000,9999)}"
+                            # 1. Get a meme-style caption from the image
+                            try:
+                                meme_caption = get_image_caption(image_url)
+                                print(f"AI Caption: {meme_caption}")
+                            except Exception as e:
+                                print(f"AI captioning failed: {e}")
+                                meme_caption = None
+
+                            # 2. Generate a funny reply using LLM
+                            try:
+                                if meme_caption:
+                                    funny_reply = generate_funny_reply(meme_caption)
+                                else:
+                                    funny_reply = "memeing it!"  # fallback
+                                print(f"AI Reply: {funny_reply}")
+                            except Exception as e:
+                                print(f"AI reply generation failed: {e}")
+                                funny_reply = "memeing it!"
+
+                            # 3. Reply to the tweet with the AI-generated funny reply
                             try:
                                 client.create_tweet(
                                     in_reply_to_tweet_id=tweet.id,
-                                    text=unique_reply
-                            )
-                                print(f"Replied to tweet ID {tweet.id}")
+                                    text=funny_reply
+                                )
+                                print(f"Replied to tweet ID {tweet.id} with AI reply")
                             except Exception as e:
                                 print(f"Error replying to {tweet.id}: {e}")
 

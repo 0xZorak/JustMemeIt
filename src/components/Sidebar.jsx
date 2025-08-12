@@ -34,7 +34,7 @@ const Sidebar = ({ lightMode, toggleMode }) => {
         </Link>
       </div>
       <div className="bottom-icons">
-        <a href="https://t.me/yourusername" target="_blank" rel="noopener noreferrer">
+        <a href="https://meme-it.gitbook.io/justmemeit/" target="_blank" rel="noopener noreferrer">
           <i className="fa-solid fa-book"></i>
         </a>
         <a href="https://x.com/justmemeit_" target="_blank" rel="noopener noreferrer">

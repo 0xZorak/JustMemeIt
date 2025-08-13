@@ -26,40 +26,62 @@ const Rank = () => {
           {winners.length > 0 ? (
             winners.map((winner, idx) => (
               <a
-                className="winner-card"
+                className="winner-card rank-animate"
                 href={winner.xLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 key={winner._id}
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "32px",
+                  padding: "24px",
+                  background: "#181818",
+                  borderRadius: "18px",
+                  marginBottom: "32px",
+                  textDecoration: "none",
+                  color: "inherit",
+                  maxWidth: "700px",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
               >
-                <div className="winner-avatar">
-                  {/* <img src={winner.avatar} alt={winner.name} /> */}
-                  {/* <span className="winner-rank">#{winner.rank}</span> */}
+                <div className="winner-image" style={{ flex: "0 0 300px" }}>
+                  <img
+                    src={
+                      winner.image_url.startsWith("http")
+                        ? winner.image_url
+                        : `http://localhost:4000${winner.image_url}`
+                    }
+                    alt="Winning Meme"
+                    style={{
+                      maxWidth: 300,
+                      borderRadius: 12,
+                      marginTop: 0,
+                      display: "block",
+                      boxShadow: "0 4px 16px rgba(0,0,0,0.18)",
+                    }}
+                  />
                 </div>
-                <div className="winner-content">
+                <div className="winner-content" style={{ flex: 1 }}>
                   <div className="winner-header">
-                    <span className="winner-name">{winner.name}</span>
-                    {/* <span className="winner-username">{winner.username}</span> */}
+                    <span
+                      className="winner-name"
+                      style={{ fontWeight: "bold", fontSize: 22 }}
+                    >
+                      {winner.name}
+                    </span>
                   </div>
-                  <div className="winner-meme">
+                  <div
+                    className="winner-meme"
+                    style={{ margin: "10px 0", color: "#ccc" }}
+                  >
                     {winner.meme.split("\n").map((line, i) => (
-                      <div key={i}>{line}</div>
+                      <div key={i}> caption: {line}</div>
                     ))}
-                  </div>
-                  <div>
-                    <img
-                      src={
-                        winner.image_url.startsWith("http")
-                          ? winner.image_url
-                          : `http://localhost:4000${winner.image_url}`
-                      }
-                      alt="Winning Meme"
-                      style={{
-                        maxWidth: 300,
-                        borderRadius: 12,
-                        marginTop: 12,
-                      }}
-                    />
                   </div>
                   <div style={{ color: "#8ab4f8", marginTop: 8 }}>
                     Votes: {winner.votes}
@@ -69,6 +91,8 @@ const Rank = () => {
                     {new Date(winner.timestamp).toLocaleString()})
                   </div>
                 </div>
+                {/* Animated confetti effect */}
+                <div className="confetti"></div>
               </a>
             ))
           ) : (

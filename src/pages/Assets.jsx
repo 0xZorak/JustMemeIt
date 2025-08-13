@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 
 // Dummy data for demonstration. Replace with actual props or context.
-const xProfileUrl = "/images/avatar.png"; // Replace with actual X profile image URL
+const xProfileUrl = "sei_red_symbol.png"; // Replace with actual X profile image URL
 const xHandle = "zorak"; // Replace with actual X handle
 const assetsWon = [
-  { id: 1, name: "Dragon NFT", imageUrl: "/images/cover.jpg" },
-  { id: 2, name: "Furby NFT", imageUrl: "/images/dan.jpg" },
-  { id: 3, name: "Logo NFT", imageUrl: "/images/logo.png" },
+  { id: 1, name: "Dragon NFT", imageUrl: "sei_red_symbol.png" },
+  { id: 2, name: "Furby NFT", imageUrl: "sei_red_symbol.png" },
+  { id: 3, name: "Logo NFT", imageUrl: "sei_red_symbol.png" },
   // Add more assets as needed
 ];
 

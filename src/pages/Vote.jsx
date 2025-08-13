@@ -135,20 +135,6 @@ const Vote = ({ lightMode }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // Optionally, fetch votes for each meme if you have a votes API
-  // useEffect(() => {
-  //   votingMemes.forEach(meme => {
-  //     fetch(`http://localhost:4000/api/vote/${meme._id}`)
-  //       .then(res => res.json())
-  //       .then(data => {
-  //         setMemeVotes(prev => ({
-  //           ...prev,
-  //           [meme._id]: data.votes,
-  //         }));
-  //       });
-  //   });
-  // }, [votingMemes]);
-
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <Header lightMode={lightMode} />

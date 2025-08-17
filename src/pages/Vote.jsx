@@ -11,6 +11,7 @@ import {
 } from "wagmi";
 import { parseEther } from "viem";
 import { useModal } from "../context/ModalContext";
+import backgroundImg from "../images/background.png"; // adjust filename if needed
 
 const X_USER_KEY = "xUser";
 
@@ -22,6 +23,7 @@ const Vote = ({ lightMode }) => {
   const [selectedMeme, setSelectedMeme] = useState(null);
   const [memeVotes, setMemeVotes] = useState({});
   const [votingMemes, setVotingMemes] = useState([]);
+  const [alertMsg, setAlertMsg] = useState(""); // Add this state
   const dropdownRef = useRef(null);
 
   // On mount: check for X login in URL or localStorage
@@ -66,15 +68,21 @@ const Vote = ({ lightMode }) => {
   const { switchChain } = useSwitchChain();
   const chainId = useChainId();
 
+  // Custom alert handler
+  const showAlert = (msg) => {
+    setAlertMsg(msg);
+    setTimeout(() => setAlertMsg(""), 2000);
+  };
+
   // Dummy vote handler
   const handleVote = async (voteCount, totalSei) => {
     if (!isConnected) {
-      alert("Connect your wallet first!");
+      showAlert("Connect your wallet first!");
       return;
     }
     if (chainId !== 1329) {
       switchChain?.({ chainId: 1329 });
-      alert("Please switch your wallet to SEI EVM network.");
+      showAlert("Please switch your wallet to SEI EVM network.");
       return;
     }
     try {
@@ -89,7 +97,7 @@ const Vote = ({ lightMode }) => {
 
       const txHash = typeof tx === "string" ? tx : tx?.hash;
       if (!txHash) {
-        alert("Transaction failed: No txHash returned");
+        showAlert("Transaction failed: No txHash returned");
         return;
       }
 
@@ -113,13 +121,13 @@ const Vote = ({ lightMode }) => {
           ...prev,
           [selectedMeme._id]: (prev[selectedMeme._id] || 0) + voteCount,
         }));
-        alert(`You voted ${voteCount} times for a total of ${totalSei} SEI!`);
+        showAlert(`You voted ${voteCount} times for a total of ${totalSei} SEI!`);
       } else {
-        alert("Vote not counted: " + (data.error || "Unknown error"));
+        showAlert("Vote not counted: " + (data.error || "Unknown error"));
       }
       setSelectedMeme(null);
     } catch (err) {
-      alert("Transaction failed: " + err.message);
+      showAlert("Transaction failed: " + err.message);
     }
   };
 
@@ -135,22 +143,30 @@ const Vote = ({ lightMode }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // Optionally, fetch votes for each meme if you have a votes API
-  // useEffect(() => {
-  //   votingMemes.forEach(meme => {
-  //     fetch(`http://localhost:4000/api/vote/${meme._id}`)
-  //       .then(res => res.json())
-  //       .then(data => {
-  //         setMemeVotes(prev => ({
-  //           ...prev,
-  //           [meme._id]: data.votes,
-  //         }));
-  //       });
-  //   });
-  // }, [votingMemes]);
-
   return (
     <div style={{ width: "100%", height: "100%" }}>
+      {/* Alert box */}
+      {alertMsg && (
+        <div
+          style={{
+            position: "fixed",
+            top: 24,
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "#222",
+            color: "#fff",
+            padding: "14px 32px",
+            borderRadius: 12,
+            boxShadow: "0 2px 12px #0004",
+            fontSize: 18,
+            zIndex: 9999,
+            minWidth: 320,
+            textAlign: "center",
+          }}
+        >
+          {alertMsg}
+        </div>
+      )}
       <Header lightMode={lightMode} />
       <div
         className="page-scroll-area"
@@ -242,7 +258,13 @@ const Vote = ({ lightMode }) => {
                 ? "repeat(auto-fit, minmax(360px, 1fr))"
                 : undefined,
             gap: 32,
-            padding: "32px 20px 100px 20px", 
+            padding: "32px 20px 100px 20px",
+            backgroundImage: `url(${backgroundImg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            borderRadius: 18,
+            minHeight: 400, // ensures bg is visible even if no memes
           }}
         >
           {votingMemes.length === 0 && (

@@ -17,9 +17,10 @@ const User = () => {
   const [hoveredTrash, setHoveredTrash] = useState(null);
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-const { modalOpen } = useModal();
+  const { modalOpen } = useModal();
   const [xUser, setXUser] = useState(null);
   const { address, isConnected } = useAccount();
+  const [alertMsg, setAlertMsg] = useState("");
 
   // Load X user from localStorage
   useEffect(() => {
@@ -83,7 +84,7 @@ const { modalOpen } = useModal();
     });
     const data = await res.json();
     if (data.success) {
-      alert("Meme sent for voting!");
+      showAlert("Meme sent for voting!"); // <-- use showAlert instead of alert
       setUserMemes((memes) =>
         memes.map((m) =>
           m._id === selectedMemeId
@@ -124,14 +125,43 @@ const { modalOpen } = useModal();
     }
   };
 
+  // Custom alert handler
+  const showAlert = (msg) => {
+    setAlertMsg(msg);
+    setTimeout(() => setAlertMsg(""), 2000);
+  };
+
+  // Use showAlert("Your message") wherever you want to show an alert
+
   // Use this computed value instead:
   const needsUnlock = !(xUser && isConnected);
 
   return (
     <div className="user-page">
+      {/* Alert box */}
+      {alertMsg && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 32,
+            right: 32,
+            background: "#222",
+            color: "#fff",
+            padding: "14px 32px",
+            borderRadius: 12,
+            boxShadow: "0 2px 12px #0004",
+            fontSize: 18,
+            zIndex: 9999,
+            minWidth: 320,
+            textAlign: "center",
+          }}
+        >
+          {alertMsg}
+        </div>
+      )}
       <div
         style={{
-          filter: modalOpen ? "blur(6px)" : "none",
+          filter: alertMsg ? "blur(6px)" : modalOpen ? "blur(6px)" : "none",
           transition: "filter 0.2s",
         }}
       >

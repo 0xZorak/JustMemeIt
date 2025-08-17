@@ -224,17 +224,12 @@ const Header = ({ lightMode }) => {
           <p className="sub-text">
             See a funny or viral meme posted by Elon Musk or anyone else?
           </p>
-          <p className="sub-text">
-            Reply under the tweet with: &gt; @justmemeit_ meme it
-          </p>
+        
           <p>2. Collect Memes During the Day</p>
           <p className="sub-text">
             Every meme you “meme’d” gets added to your private dashboard.
           </p>
-          <p className="sub-text">
-            At the end of the day, you’ll have a collection of your favorite
-            memes.
-          </p>
+         
           <p>3. Pick Your Best Meme for the Weekly Battle</p>
           <p className="sub-text">
             Once a week, choose one meme from your gallery to enter into the
@@ -248,7 +243,7 @@ const Header = ({ lightMode }) => {
           </p>
           <p className="sub-text">1 $SEI = 1 vote.</p>
           <p className="sub-text">
-            You can vote on as many memes as you like — once per meme.
+            You can vote on as many memes as you like.
           </p>
           <p>5. Top Meme Becomes an NFT</p>
           <p className="sub-text">When the voting ends:</p>

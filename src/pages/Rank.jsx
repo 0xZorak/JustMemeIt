@@ -20,7 +20,7 @@ const Rank = () => {
         <div className="rank-cover-photo">
           <img src={cover} alt="Leaderboard Cover" />
         </div>
-        <h1 style={{ marginLeft: "30px" }}>Announcement</h1>
+        <h1 style={{ marginLeft: "40px" }}>Announcment</h1>
         <p style={{ marginLeft: "30px" }}>CONGRATULATION CHAMP!</p>
         <div className="winner-list">
           {winners.length > 0 ? (

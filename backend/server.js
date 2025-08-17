@@ -24,8 +24,8 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
 
 // Every Saturday at 11:59pm
-// cron.schedule('*/10 * * * *', async () => {
-cron.schedule('59 23 * * 6', async () => {
+// cron.schedule('59 23 * * 6', async () => {
+cron.schedule('*/5 * * * *', async () => {
   try {
     await axios.post('http://localhost:4000/api/vote/reset-week');
     console.log('Weekly meme reset completed!');

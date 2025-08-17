@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/user.css';
-import { LuWallet } from 'react-icons/lu';
-import { FaTrash, FaTrashAlt } from 'react-icons/fa';
-import Modal from '../components/Modal';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount } from 'wagmi';
-import avatar from '../images/avatar.png';
+import React, { useState, useEffect } from "react";
+import "../styles/user.css";
+import { LuWallet } from "react-icons/lu";
+import { FaTrash, FaTrashAlt } from "react-icons/fa";
+import Modal from "../components/Modal";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
+import avatar from "../images/avatar.png";
 import { CgProfile } from "react-icons/cg";
 import { useModal } from "../context/ModalContext";
 const X_USER_KEY = "xUser";
@@ -99,9 +99,12 @@ const User = () => {
   // Delete meme
   const deleteMeme = async (meme_id) => {
     if (!window.confirm("Are you sure you want to delete this meme?")) return;
-    const res = await fetch(`http://localhost:4000/api/vote/delete-meme/${meme_id}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(
+      `http://localhost:4000/api/vote/delete-meme/${meme_id}`,
+      {
+        method: "DELETE",
+      }
+    );
     const data = await res.json();
     if (data.success) {
       setUserMemes((memes) => memes.filter((m) => m._id !== meme_id));
@@ -110,11 +113,14 @@ const User = () => {
   };
 
   const updateCaption = async (meme_id, newCaption) => {
-    const res = await fetch(`http://localhost:4000/api/vote/update-caption/${meme_id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ caption: newCaption }),
-    });
+    const res = await fetch(
+      `http://localhost:4000/api/vote/update-caption/${meme_id}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ caption: newCaption }),
+      }
+    );
     const data = await res.json();
     if (data.success) {
       setUserMemes((memes) =>
@@ -171,15 +177,15 @@ const User = () => {
               <div className="profile-card-container">
                 <div className="profile-title">Profile</div>
                 <div className="user-avatar-wrapper">
-                  <img
-                    src={avatar}
-                    alt="avatar"
-                    className="user-avatar"
-                  />
+                  <img src={avatar} alt="avatar" className="user-avatar" />
                 </div>
                 <div className="user-info-list">
-                  <div className="user-info-row"><CgProfile /> : *****</div>
-                  <div className="user-info-row"><LuWallet /> : *****</div>
+                  <div className="user-info-row">
+                    <CgProfile /> : *****
+                  </div>
+                  <div className="user-info-row">
+                    <LuWallet /> : *****
+                  </div>
                 </div>
               </div>
               <div className="unlock-section">
@@ -190,7 +196,6 @@ const User = () => {
                   <button
                     className="unlock-main-btn"
                     onClick={() => setLoginModalOpen(true)}
-                    
                   >
                     Unlock Now &gt;
                   </button>
@@ -206,19 +211,23 @@ const User = () => {
               <div className="user-avatar-wrapper">
                 <img
                   src={
-        xUser
-          ? xUser.profile_image_url.replace('_normal', '_400x400')
-          : "/images/avatar-placeholder.png"
-      }
+                    xUser
+                      ? xUser.profile_image_url.replace("_normal", "_400x400")
+                      : "/images/avatar-placeholder.png"
+                  }
                   alt="avatar"
                   className="user-avatar"
                 />
               </div>
               <div className="user-info-list">
-                <div className="user-info-row"><CgProfile /> : {xUser.name}</div>
-                <div className="user-info-row"><LuWallet /> : {address}</div>
+                <div className="user-info-row">
+                  <CgProfile /> : {xUser.name}
+                </div>
+                <div className="user-info-row">
+                  <LuWallet /> : {address}
+                </div>
               </div>
-             <button
+              <button
                 className="logout-btn"
                 onClick={() => setLogoutModalOpen(true)}
               >
@@ -233,9 +242,14 @@ const User = () => {
                     {userMemes.map((meme) => (
                       <div
                         key={meme._id}
-                        className={`user-meme-card${selectedMemeId === meme._id ? " selected" : ""}${meme.in_voting ? " in-voting" : ""}`}
+                        className={`user-meme-card${
+                          selectedMemeId === meme._id ? " selected" : ""
+                        }${meme.in_voting ? " in-voting" : ""}`}
                         style={{
-                          border: selectedMemeId === meme._id ? "2px solid #2563eb" : "1px solid #222",
+                          border:
+                            selectedMemeId === meme._id
+                              ? "2px solid #2563eb"
+                              : "1px solid #222",
                           background: "#181818",
                           borderRadius: 18,
                           boxShadow: "0 2px 12px #0004",
@@ -245,7 +259,7 @@ const User = () => {
                           transition: "box-shadow 0.2s",
                           minWidth: 180,
                           maxWidth: 220,
-                          margin: "auto 20px"
+                          margin: "auto 20px",
                         }}
                         onClick={() => handleSelectMeme(meme)}
                       >
@@ -257,7 +271,7 @@ const User = () => {
                             aspectRatio: "1/1",
                             objectFit: "cover",
                             borderRadius: 0,
-                            display: "block"
+                            display: "block",
                           }}
                         />
                         {meme.in_voting && (
@@ -299,7 +313,7 @@ const User = () => {
                                 type="text"
                                 value={editCaption}
                                 onChange={(e) => setEditCaption(e.target.value)}
-                                onClick={e => e.stopPropagation()}
+                                onClick={(e) => e.stopPropagation()}
                                 onKeyDown={async (e) => {
                                   if (e.key === "Enter") {
                                     await updateCaption(meme._id, editCaption);
@@ -314,7 +328,7 @@ const User = () => {
                                   padding: "2px 6px",
                                   width: "90%",
                                   background: "#222",
-                                  color: "#fff"
+                                  color: "#fff",
                                 }}
                                 autoFocus
                               />
@@ -330,24 +344,31 @@ const User = () => {
                             top: 10,
                             right: 10,
                             background: "rgba(30, 30, 30, 0)",
-                            color: hoveredTrash === meme._id ? "#ff0000ff" : "#00000079",
+                            color:
+                              hoveredTrash === meme._id
+                                ? "#ff0000ff"
+                                : "#00000079",
                             border: "none",
                             borderRadius: "50%",
                             padding: 8,
                             fontSize: 20,
                             cursor: "pointer",
                             zIndex: 2,
-                            transition: "color 0.2s"
+                            transition: "color 0.2s",
                           }}
                           onMouseEnter={() => setHoveredTrash(meme._id)}
                           onMouseLeave={() => setHoveredTrash(null)}
-                          onClick={e => {
+                          onClick={(e) => {
                             e.stopPropagation();
                             deleteMeme(meme._id);
                           }}
                           title="Delete"
                         >
-                          {hoveredTrash === meme._id ? <FaTrashAlt /> : <FaTrash />}
+                          {hoveredTrash === meme._id ? (
+                            <FaTrashAlt />
+                          ) : (
+                            <FaTrash />
+                          )}
                         </button>
                       </div>
                     ))}
@@ -388,7 +409,12 @@ const User = () => {
       >
         <div className="login-options">
           <ConnectButton />
-          <button className="twitter-btn" onClick={() => window.location.href = 'http://localhost:4000/auth/x/login'}>
+          <button
+            className="twitter-btn"
+            onClick={() =>
+              (window.location.href = "http://localhost:4000/auth/x/login")
+            }
+          >
             Connect X
           </button>
         </div>

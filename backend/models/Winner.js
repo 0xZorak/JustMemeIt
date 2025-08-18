@@ -7,11 +7,13 @@ const winnerSchema = new mongoose.Schema({
   username: String,
   meme: String,
   image_url: String,
+  creator_wallet_address: String,
   rank: Number,
   votes: Number,
   xLink: String,
-  week: String, // e.g. "2025-08-10"
-  timestamp: { type: Date, default: Date.now }
+  week: String,
+  timestamp: { type: Date, default: Date.now },
+  voter_wallet_addresses: [String]
 });
 
 module.exports = mongoose.model('Winner', winnerSchema);

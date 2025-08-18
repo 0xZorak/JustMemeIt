@@ -31,39 +31,17 @@ def get_image_caption(image_url: str) -> str | None:
         return None
 
 def generate_funny_reply(caption, max_retries=3):
-    api_url = "https://api-inference.huggingface.co/models/google/gemma-2b-it"
-    headers = {
-        "Authorization": f"Bearer {hf_token}",
-        "Content-Type": "application/json"
-    }
     prompt = (
-        "Here are some meme examples:\n"
-        "Meme description: a cat wearing sunglasses\nMeme reply: Too cool for catnip!\n"
-        "Meme description: a dog chasing its tail\nMeme reply: Monday mood.\n"
-        f"Meme description: {caption}\nMeme reply:"
+        f"Meme description: {caption}\nWrite a short, funny meme reply:"
     )
-    payload = {
-        "inputs": prompt,
-        "parameters": {
-            "max_new_tokens": 40,
-            "temperature": 0.7
-        }
-    }
-    for attempt in range(max_retries):
-        try:
-            response = requests.post(api_url, headers=headers, json=payload, timeout=60)
-            response.raise_for_status()
-            result = response.json()
-            print(f"Hugging Face API response: {result}")  # For debugging
-            if isinstance(result, dict) and "error" in result and "loading" in result["error"]:
-                print("Model is loading, retrying...")
-                time.sleep(5 * (attempt + 1))
-                continue
-            if isinstance(result, list) and isinstance(result[0], dict) and "generated_text" in result[0]:
-                reply = result[0]["generated_text"].strip()
-                return reply.split('\n')[0]
-            return "memeing it!"
-        except Exception as e:
-            print(f"Error with Hugging Face Inference API (attempt {attempt+1}): {e}")
-            time.sleep(2 * (attempt + 1))
-    return "memeing it!"
+    try:
+        result = gpt2_pipe(prompt, max_new_tokens=40, temperature=0.9)
+        reply = result[0]["generated_text"].strip()
+        # Remove the prompt from the reply if present
+        if reply.lower().startswith(prompt.lower()):
+            reply = reply[len(prompt):].strip()
+        # Return only the first line (short meme reply)
+        return reply.split('\n')[0]
+    except Exception as e:
+        print(f"Error with local GPT-2: {e}")
+        return "memeing it!"

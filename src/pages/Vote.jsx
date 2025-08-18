@@ -264,7 +264,7 @@ const Vote = ({ lightMode }) => {
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
             borderRadius: 18,
-            minHeight: 400, // ensures bg is visible even if no memes
+            minHeight: 500, 
           }}
         >
           {votingMemes.length === 0 && (

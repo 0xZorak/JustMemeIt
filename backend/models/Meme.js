@@ -8,6 +8,7 @@ const memeSchema = new mongoose.Schema({
   profile_image_url: String,
   caption: String,
   image_url: String,
+  creator_wallet_address: String,
   created_at: { type: Date, default: Date.now },
   in_voting: { type: Boolean, default: false }
 });

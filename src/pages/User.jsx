@@ -71,15 +71,15 @@ const User = () => {
   // Send selected meme for voting
   const sendForVoting = async () => {
     if (!selectedMemeId) return;
-    // const meme = userMemes.find((m) => m._id === selectedMemeId);
     const res = await fetch("http://localhost:4000/api/vote/send-for-voting", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         meme_id: selectedMemeId,
         caption: editCaption,
-        username: xUser?.name, // or xUser?.username if available
+        username: xUser?.name,
         name: xUser?.name,
+        creator_wallet_address: address,
       }),
     });
     const data = await res.json();

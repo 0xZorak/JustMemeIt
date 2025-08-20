@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^7.0.0",
+    "@fortawesome/free-solid-svg-icons": "^7.0.0",
+    "@fortawesome/react-fontawesome": "^0.2.5",
     "@pinata/sdk": "^2.1.0",
     "@rainbow-me/rainbowkit": "^2.2.8",
     "@tanstack/query-core": "^5.83.0",

@@ -22,6 +22,7 @@ const Rank = () => {
         </div>
         <h1 style={{ marginLeft: "40px" }}>Announcment</h1>
         <p style={{ marginLeft: "30px" }}>CONGRATULATION CHAMP!</p>
+       
         <div className="winner-list">
           {winners.length > 0 ? (
             winners.map((winner, idx) => (
@@ -94,6 +95,7 @@ const Rank = () => {
                 {/* Animated confetti effect */}
                 <div className="confetti"></div>
               </a>
+             
             ))
           ) : (
             <div

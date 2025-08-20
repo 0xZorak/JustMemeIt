@@ -7,6 +7,7 @@ import Vote from './pages/Vote';
 import Rank from './pages/Rank';
 import Assets from './pages/Assets';
 import User from './pages/User';
+import MemeAI from './pages/MemeAI';
 import './styles/styles.css';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
               <Route path="/rank" element={<Rank />} />
               <Route path="/assets" element={<Assets />} />
               <Route path="/user" element={<User />} />
+              <Route path="/memeai" element={<MemeAI />} />
             </Routes>
           </div>
         </div>

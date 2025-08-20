@@ -2,10 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/logo.png';
 import { SiX } from 'react-icons/si';     
-import { useModal } from "../context/ModalContext";
 
 const Sidebar = ({ lightMode, toggleMode }) => {
-  // No need to use setModalOpen here
 
   return (
     <div className={`sidebar${lightMode ? ' light-mode' : ''}`}>
@@ -31,6 +29,10 @@ const Sidebar = ({ lightMode, toggleMode }) => {
         <Link className="sidebar-icon" to="/user">
           <i className="fa-solid fa-user"></i>
           <span>User</span>
+        </Link>
+        <Link className="sidebar-icon" to="/memeai">
+          <i className="fa-solid fa-magic"></i>
+          <span>MemeAI</span>
         </Link>
       </div>
       <div className="bottom-icons">

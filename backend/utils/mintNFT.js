@@ -11,10 +11,12 @@ const provider = new ethers.JsonRpcProvider(process.env.SEI_EVM_RPC);
 const contractABI = require("./MemeItWinnerABI.json");
 
 const CONTRACT_ADDRESS = process.env.MEMEITWINNER_CONTRACT;
+// const MARKETPLACE = process.env.MARKETPLACE_CONTRACT;
 
 async function mintNFT(to, tokenURI) {
   const wallet = new ethers.Wallet(DEPLOYER_PRIVATE_KEY, provider);
   const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, wallet);
+//   await contract.setApprovalForAll(MARKETPLACE, true);
 
   const tx = await contract.mintNFT(to, tokenURI);
   const receipt = await tx.wait();

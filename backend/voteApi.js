@@ -5,6 +5,7 @@ const Meme = require('./models/Meme.js');
 const Winner = require('./models/Winner.js');
 const { mintNFT } = require('./utils/mintNFT.js');
 const { uploadMemeAndMetadataToIPFS } = require('./utils/pinataNFT.js');
+// const { listNFTOnMagicEden } = require('./utils/magicEden.js');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -39,8 +40,7 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Transaction not verified', details: verifyRes.data });
     }
 
-    await Vote.create({ memeId, memeName, voter, voter_wallet_address, txHash, votes });
-
+    await Vote.create
     const totalVotes = await Vote.aggregate([
       { $match: { memeName } },
       { $group: { _id: '$memeName', votes: { $sum: '$votes' } } }
@@ -190,16 +190,54 @@ router.post('/reset-week', async (req, res) => {
 
       if (recipientWallet && metadataUrl) {
         try {
-          const receipt = await mintNFT(recipientWallet, metadataUrl); 
+          const receipt = await mintNFT(recipientWallet, metadataUrl);
           console.log("NFT Minted! Tx:", receipt.hash);
+
+          // Get tokenId from receipt (assumes contract emits Transfer event)
+          // const transferEvent = receipt.logs.find(
+          //   log => log.topics[0] === ethers.id("Transfer(address,address,uint256)")
+          // );
+          // let tokenId = null;
+          // if (transferEvent) {
+          //   tokenId = ethers.toBigInt(transferEvent.topics[3]).toString();
+          // }
+          // if (tokenId) {
+          //   await listNFTOnMagicEden({
+          //     contractAddress: process.env.MEMEITWINNER_CONTRACT,
+          //     tokenId,
+          //     priceInSEI: process.env.DEFAULT_LIST_PRICE_SEI,
+          //   });
+          // } else {
+          //   console.warn("Could not extract tokenId from mint receipt, NFT not listed.");
+          // }
+
         } catch (err) {
           console.error("NFT minting failed (creator):", err);
         }
-        // Mint to voters
+        // Mint and list for voters
         for (const voter of voterWallets) {
           try {
-            const receipt = await mintNFT(voter, metadataUrl); 
+            const receipt = await mintNFT(voter, metadataUrl);
             console.log(`NFT Minted for voter ${voter}! Tx:`, receipt.hash);
+
+            // Extract tokenId and list
+            // const transferEvent = receipt.logs.find(
+            //   log => log.topics[0] === ethers.id("Transfer(address,address,uint256)")
+            // );
+            // let tokenId = null;
+            // if (transferEvent) {
+            //   tokenId = ethers.toBigInt(transferEvent.topics[3]).toString();
+            // }
+            // if (tokenId) {
+            //   await listNFTOnMagicEden({
+            //     contractAddress: process.env.MEMEITWINNER_CONTRACT,
+            //     tokenId,
+            //     priceInSEI: process.env.DEFAULT_LIST_PRICE_SEI,
+            //   });
+            // } else {
+            //   console.warn(`Could not extract tokenId for voter ${voter}, NFT not listed.`);
+            // }
+
           } catch (err) {
             console.error(`NFT minting failed for voter ${voter}:`, err);
           }

@@ -263,8 +263,8 @@ const Vote = ({ lightMode }) => {
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
-            borderRadius: 18,
-            minHeight: 400, // ensures bg is visible even if no memes
+            borderRadius: 20,
+            minHeight: 520, 
           }}
         >
           {votingMemes.length === 0 && (
@@ -285,7 +285,7 @@ const Vote = ({ lightMode }) => {
                 padding: 24,
                 maxHeight: view === "grid" ? 160 : 90,
                 width: view === "grid" ? 360 : "96%",
-                margin: view === "grid" ? "auto" : "0 0 20px 0",
+                margin: view === "grid" ? "0" : "0 0 20px 0",
                 cursor: "pointer",
               }}
               onClick={() => setSelectedMeme(meme)}
@@ -337,7 +337,7 @@ const Vote = ({ lightMode }) => {
                   }}
                 >
                   <img
-                    src="sei_red_symbol.png"
+                    src="http://localhost:4000/user_memes/sei_red_symbol.png"
                     alt=""
                     style={{
                       width: 15,

@@ -1,0 +1,168 @@
+.memeai-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #37393a 0%, #0c0c0cc1 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 48px;
+  font-family: "Poppins", sans-serif;
+}
+
+.memeai-flex {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #151515 0%, #35353a 100%);
+  font-family: "Poppins", sans-serif;
+}
+
+.memeai-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 32px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.memeai-form-container {
+  width: 370px;
+  margin: 48px 32px 0 0;
+  background: #181818;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.memeai-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.memeai-label {
+  color: #eee;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.memeai-input,
+.memeai-select {
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.memeai-select {
+  margin-left: 10px;
+}
+
+.memeai-input:focus,
+.memeai-select:focus {
+  border-color: #2563eb;
+}
+
+.memeai-btn {
+  background: linear-gradient(90deg, #2563eb 0%, #b32c2c 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 14px 0;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background 0.2s;
+}
+
+.memeai-btn:disabled {
+  background: #444;
+  cursor: not-allowed;
+}
+
+.memeai-alert {
+  color: #ff4d4f;
+  background: #222;
+  border-radius: 8px;
+  padding: 10px 18px;
+  margin-bottom: 18px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.memeai-result-container {
+  margin-top: 48px;
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 420px;
+}
+
+.memeai-result {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.memeai-img {
+  max-width: 420px;
+  max-height: 420px;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.22);
+  margin-bottom: 18px;
+  background: #222;
+  border: 2px solid #2563eb;
+}
+
+.memeai-btn-row {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 12px;
+}
+
+.memeai-download,
+.memeai-nft-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 10px 24px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.memeai-download:hover,
+.memeai-nft-btn:hover {
+  background: #b32c2c;
+}
+
+.memeai-nft-btn:disabled {
+  background: #444;
+  cursor: not-allowed;
+}
+
+.memeai-mint-alert {
+  color: #00e676;
+  background: #222;
+  border-radius: 8px;
+  padding: 10px 18px;
+  margin-top: 8px;
+  font-size: 1rem;
+  text-align: center;
+}

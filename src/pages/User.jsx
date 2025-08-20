@@ -84,7 +84,7 @@ const User = () => {
     });
     const data = await res.json();
     if (data.success) {
-      showAlert("Meme sent for voting!"); // <-- use showAlert instead of alert
+      showAlert("Meme sent for voting!"); 
       setUserMemes((memes) =>
         memes.map((m) =>
           m._id === selectedMemeId
@@ -137,9 +137,6 @@ const User = () => {
     setTimeout(() => setAlertMsg(""), 2000);
   };
 
-  // Use showAlert("Your message") wherever you want to show an alert
-
-  // Use this computed value instead:
   const needsUnlock = !(xUser && isConnected);
 
   return (
@@ -151,8 +148,8 @@ const User = () => {
             position: "fixed",
             bottom: 32,
             right: 32,
-            background: "#222",
-            color: "#fff",
+            background: "#222222ff",
+            color: "#00e676",
             padding: "14px 32px",
             borderRadius: 12,
             boxShadow: "0 2px 12px #0004",
@@ -264,7 +261,7 @@ const User = () => {
                         onClick={() => handleSelectMeme(meme)}
                       >
                         <img
-                          src={meme.image_url}
+                          src={`http://localhost:4000/${meme.image_url}`}
                           alt={meme.caption}
                           style={{
                             width: "100%",

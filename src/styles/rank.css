@@ -183,3 +183,211 @@
   box-sizing: border-box;
   padding-right: 0; /* Remove extra padding if any */
 }
+
+.rank-page {
+  min-height: 100vh;
+  background: #10131a;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Orbitron', 'Poppins', 'Montserrat', sans-serif;
+}
+
+.rank-parallax-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: linear-gradient(120deg, #070d0faa 0%, #242323 100%);
+  z-index: 0;
+  opacity: 0.85;
+  pointer-events: none;
+  animation: parallaxMove 18s linear infinite alternate;
+}
+
+@keyframes parallaxMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 100vw 100vh; }
+}
+
+.rank-scroll-area {
+  position: relative;
+  z-index: 2;
+  padding-top: 48px;
+}
+
+.rank-cover-photo {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 32px auto;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,255,255,0.08);
+  animation: fadeInUp 1.2s cubic-bezier(.77,0,.18,1) both;
+}
+
+.rank-cover-photo img {
+  width: 100%;
+  display: block;
+  border-radius: 24px;
+}
+
+.rank-title {
+  text-align: center;
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin: 24px 0 8px 0;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 0 16px #ffffff, 0 0 32px #868686;
+  animation: fadeIn 1.5s cubic-bezier(.77,0,.18,1) both;
+}
+
+.rank-subtitle {
+  text-align: center;
+  font-size: 1.4rem;
+  color: #ffffff;
+  margin-bottom: 32px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  animation: fadeIn 2s cubic-bezier(.77,0,.18,1) both;
+}
+
+.winner-list {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.winner-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  padding: 32px;
+  background: rgba(20, 22, 34, 0.98);
+  border-radius: 18px;
+  margin-bottom: 0;
+  text-decoration: none;
+  color: #fff;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 8px 32px rgba(131, 131, 131, 0.12);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(.77,0,.18,1), box-shadow 0.3s;
+  opacity: 0;
+  animation: fadeInUp 1.2s cubic-bezier(.77,0,.18,1) both;
+}
+
+.winner-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 16px 48px #0095ff75, 0 0 32px #0088ff4f;
+  border: 1.5px solid #0077ff85;
+}
+
+.winner-image img {
+  max-width: 300px;
+  border-radius: 16px;
+  margin-top: 0;
+  display: block;
+  box-shadow: 0 4px 16px #0091ffa0;
+  transition: box-shadow 0.3s;
+}
+
+.winner-card:hover .winner-image img {
+  box-shadow: 0 8px 32px #0091ffa0;
+}
+
+.winner-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.winner-header .winner-name {
+  font-weight: bold;
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 0 0 8px #dcdcdc, 0 0 16px #a5a5a5;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+}
+
+.winner-meme {
+  margin: 10px 0;
+  color: #ccc;
+  font-size: 1.1rem;
+  font-family: 'Poppins', 'Montserrat', sans-serif;
+  opacity: 0.95;
+}
+
+.winner-votes {
+  color: #8ab4f8;
+  margin-top: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.neon-blue {
+  color: #d6d6d6;
+  text-shadow: 0 0 8px #b3b3b3, 0 0 16px #b8b8b8;
+}
+
+.winner-week {
+  color: #aaa;
+  margin-top: 4px;
+  font-size: 1rem;
+  font-family: 'Poppins', 'Montserrat', sans-serif;
+}
+
+.confetti {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  background: url("https://cdn.jsdelivr.net/gh/justmemeit/confetti@main/confetti.svg") repeat;
+  opacity: 0.12;
+  animation: confettiMove 6s linear infinite alternate;
+}
+
+@keyframes confettiMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 100px 100px; }
+}
+
+.no-winner {
+  color: #888;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 48px;
+  animation: fadeIn 1.5s cubic-bezier(.77,0,.18,1) both;
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(32px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0;}
+  100% { opacity: 1;}
+}
+
+.rank-fade-in {
+  animation: fadeIn 1.5s cubic-bezier(.77,0,.18,1) both;
+}
+
+.neon-text {
+  color: #ffffff;
+  text-shadow: 0 0 8px #c0c0c0, 0 0 16px #afafaf;
+  letter-spacing: 1px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: #181818;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 8px;
+}

@@ -92,7 +92,7 @@ const Vote = ({ lightMode }) => {
         showAlert("Transaction failed: No txHash returned");
         return;
       }
-      const res = await fetch("http://localhost:4000/api/vote", {
+      const res = await fetch("https://justmemeit.onrender.com/api/vote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -122,7 +122,7 @@ const Vote = ({ lightMode }) => {
 
   useEffect(() => {
     const fetchVotingMemes = () => {
-      fetch("http://localhost:4000/api/vote/voting-memes")
+      fetch("http://justmemeit.onrender.com/api/vote/voting-memes")
         .then((res) => res.json())
         .then((data) => setVotingMemes(data.memes || []));
     };
@@ -278,7 +278,7 @@ const Vote = ({ lightMode }) => {
                 src={
                   meme.image_url.startsWith("http")
                     ? meme.image_url
-                    : `http://localhost:4000${meme.image_url}`
+                    : `http://justmemeit.onrender.com${meme.image_url}`
                 }
                 alt={meme.caption}
                 style={{
@@ -321,7 +321,7 @@ const Vote = ({ lightMode }) => {
                   }}
                 >
                   <img
-                    src="http://localhost:4000/user_memes/sei_red_symbol.png"
+                    src="http://justmemeit.onrender.com/user_memes/sei_red_symbol.png"
                     alt=""
                     style={{
                       width: 15,
@@ -344,7 +344,7 @@ const Vote = ({ lightMode }) => {
             ...selectedMeme,
             meme_image: selectedMeme.image_url.startsWith("http")
               ? selectedMeme.image_url
-              : `http://localhost:4000${selectedMeme.image_url}`,
+              : `http://justmemeit.onrender.com${selectedMeme.image_url}`,
             memeName: selectedMeme.caption,
             uploader: selectedMeme.username || selectedMeme.name || "unknown",
             price_in_sei: Number(selectedMeme.price_in_sei) || 0.005,

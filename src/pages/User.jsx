@@ -50,7 +50,7 @@ const User = () => {
 
   useEffect(() => {
     if (xUser) {
-      fetch(`http://localhost:4000/api/vote/user-memes/${xUser.user_id}`)
+      fetch(`https://justmemeit.onrender.com/api/vote/user-memes/${xUser.user_id}`)
         .then((res) => res.json())
         .then((data) => setUserMemes(data.memes || []));
     }
@@ -71,7 +71,7 @@ const User = () => {
 
   const sendForVoting = async () => {
     if (!selectedMemeId) return;
-    const res = await fetch("http://localhost:4000/api/vote/send-for-voting", {
+    const res = await fetch("https://justmemeit.onrender.com/api/vote/send-for-voting", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -100,7 +100,7 @@ const User = () => {
   const deleteMeme = async (meme_id) => {
     if (!window.confirm("Are you sure you want to delete this meme?")) return;
     const res = await fetch(
-      `http://localhost:4000/api/vote/delete-meme/${meme_id}`,
+      `https://justmemeit.onrender.com/api/vote/delete-meme/${meme_id}`,
       {
         method: "DELETE",
       }
@@ -114,7 +114,7 @@ const User = () => {
 
   const updateCaption = async (meme_id, newCaption) => {
     const res = await fetch(
-      `http://localhost:4000/api/vote/update-caption/${meme_id}`,
+      `https://justmemeit.onrender.com/api/vote/update-caption/${meme_id}`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -260,7 +260,7 @@ const User = () => {
                         onClick={() => handleSelectMeme(meme)}
                       >
                         <img
-                          src={`http://localhost:4000/${meme.image_url}`}
+                          src={`http://justmemeit.onrender.com/${meme.image_url}`}
                           alt={meme.caption}
                           style={{
                             width: "100%",
@@ -408,7 +408,7 @@ const User = () => {
           <button
             className="twitter-btn"
             onClick={() =>
-              (window.location.href = "http://localhost:4000/auth/x/login")
+              (window.location.href = "http://justmemeit.onrender.com/auth/x/login")
             }
           >
             Connect X

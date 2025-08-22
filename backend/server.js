@@ -10,7 +10,7 @@ const aiMemeApi = require('./aiMemeApi');
 const NFT = require('./models/NFT');
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: 'https://just-meme-it.vercel.app', credentials: true }));
 app.use(express.json());
 
 app.use('/auth/x', twitterAuth);
@@ -28,7 +28,7 @@ app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
 
 cron.schedule('59 23 * * 6', async () => {
   try {
-    await axios.post('http://localhost:4000/api/vote/reset-week');
+    await axios.post('http://justmemeit.onrender.com/api/vote/reset-week');
     console.log('Weekly meme reset completed!');
   } catch (err) {
     console.error('Weekly reset failed:', err.message);

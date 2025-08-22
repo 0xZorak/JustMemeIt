@@ -282,8 +282,8 @@ const Vote = ({ lightMode }) => {
                 }
                 alt={meme.caption}
                 style={{
-                  width: 110,
-                  height: 110,
+                  width: 140,
+                  height: 130,
                   borderRadius: 14,
                   objectFit: "cover",
                   marginRight: 28,

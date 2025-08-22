@@ -40,7 +40,15 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Transaction not verified', details: verifyRes.data });
     }
 
-    await Vote.create
+    await Vote.create({
+      memeId,
+      memeName,
+      voter,
+      voter_wallet_address,
+      txHash,
+      votes,
+    });
+
     const totalVotes = await Vote.aggregate([
       { $match: { memeName } },
       { $group: { _id: '$memeName', votes: { $sum: '$votes' } } }

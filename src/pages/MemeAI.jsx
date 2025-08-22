@@ -49,7 +49,7 @@ const MemeAI = () => {
       });
       const data = await res.json();
       if (data.image) {
-        setResultImage(`http://justmemeit.onrender.com${data.image}`);
+        setResultImage(`https://justmemeit.onrender.com${data.image}`);
         setResultImagePath(data.image);
       } else {
         setAlertMsg(data.error || "Failed to generate meme.");
@@ -64,7 +64,7 @@ const MemeAI = () => {
     setMinting(true);
     setMintMsg("");
     try {
-      const res = await fetch("http://justmemeit.onrender.com/api/ai-meme/mint-nft", {
+      const res = await fetch("https://justmemeit.onrender.com/api/ai-meme/mint-nft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

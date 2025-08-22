@@ -86,7 +86,7 @@ const MemeVoteModal = ({ open, onClose, meme, onVote }) => {
             Total:{" "}
             <span style={{ color: "#2563eb", fontWeight: 600 }}>
               <img
-                src="http://justmemeit.onrender.com/user_memes/sei_red_symbol.png"
+                src="https://justmemeit.onrender.com/user_memes/sei_red_symbol.png"
                 alt=""
                 style={{
                   width: 15,

@@ -46,7 +46,7 @@ const Header = ({ lightMode }) => {
   const toggleLoginModal = () => setLoginModalOpen((open) => !open);
 
   const handleXLogin = () => {
-    window.location.href = "http://localhost:4000/auth/x/login";
+    window.location.href = "https://justmemeit.onrender.com/auth/x/login";
   };
 
   const guardedToggleLoginModal = () => {

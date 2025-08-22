@@ -28,7 +28,7 @@ app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
 
 cron.schedule('59 23 * * 6', async () => {
   try {
-    await axios.post('http://justmemeit.onrender.com/api/vote/reset-week');
+    await axios.post('https://justmemeit.onrender.com/api/vote/reset-week');
     console.log('Weekly meme reset completed!');
   } catch (err) {
     console.error('Weekly reset failed:', err.message);

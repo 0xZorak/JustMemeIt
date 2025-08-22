@@ -260,7 +260,7 @@ const User = () => {
                         onClick={() => handleSelectMeme(meme)}
                       >
                         <img
-                          src={`http://justmemeit.onrender.com/${meme.image_url}`}
+                          src={`https://justmemeit.onrender.com/${meme.image_url}`}
                           alt={meme.caption}
                           style={{
                             width: "100%",
@@ -408,7 +408,7 @@ const User = () => {
           <button
             className="twitter-btn"
             onClick={() =>
-              (window.location.href = "http://justmemeit.onrender.com/auth/x/login")
+              (window.location.href = "https://justmemeit.onrender.com/auth/x/login")
             }
           >
             Connect X

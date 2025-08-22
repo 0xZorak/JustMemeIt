@@ -6,7 +6,7 @@ const Rank = () => {
   const [winners, setWinners] = useState([]);
 
   useEffect(() => {
-    fetch("http://justmemeit.onrender.com/api/vote/winner")
+    fetch("https://justmemeit.onrender.com/api/vote/winner")
       .then((res) => res.json())
       .then((data) => {
         setWinners(data.winners || []);
@@ -37,7 +37,7 @@ const Rank = () => {
                     src={
                       winner.image_url.startsWith("http")
                         ? winner.image_url
-                        : `http://justmemeit.onrender.com${winner.image_url}`
+                        : `https://justmemeit.onrender.com${winner.image_url}`
                     }
                     alt="Winning Meme"
                   />

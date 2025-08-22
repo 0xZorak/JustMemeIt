@@ -7,7 +7,7 @@ require('dotenv').config();
 const router = express.Router();
 
 router.use(cors({
-  origin: 'http://localhost:3000', // your React app origin
+  origin: 'http://localhost:3000', 
   credentials: true,
 }));
 
@@ -21,19 +21,17 @@ const CLIENT_ID = process.env.TWITTER_CLIENT_ID;
 const CLIENT_SECRET = process.env.TWITTER_CLIENT_SECRET;
 const REDIRECT_URI = process.env.TWITTER_REDIRECT_URI;
 
-// Step 1: Redirect user to Twitter for login
 router.get('/login', (req, res) => {
   const { redirect } = req.query;
-  req.session.oauthRedirect = redirect || '/vote'; // default to /vote
+  req.session.oauthRedirect = redirect || '/vote'; 
   const url = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=tweet.read users.read offline.access&state=state&code_challenge=challenge&code_challenge_method=plain`;
   res.redirect(url);
 });
 
-// Step 2: Twitter redirects back with code
+
 router.get('/callback', async (req, res) => {
   const { code } = req.query;
   try {
-    // Exchange code for access token
     const tokenRes = await axios.post('https://api.twitter.com/2/oauth2/token', null, {
       params: {
         code,
@@ -50,16 +48,15 @@ router.get('/callback', async (req, res) => {
 
     const { access_token } = tokenRes.data;
 
-    // Get user info
+
     const userRes = await axios.get('https://api.twitter.com/2/users/me', {
       headers: { Authorization: `Bearer ${access_token}` },
       params: { 'user.fields': 'profile_image_url,name,username' },
     });
 
-    // Save user in session (or send as response)
+
     req.session.xUser = userRes.data.data;
 
-    // Redirect back to frontend with user info in query (or use session/cookie)
     const { id, name, profile_image_url, username } = userRes.data.data;
     res.redirect(`http://localhost:3000/vote?user_id=${id}&name=${encodeURIComponent(name)}&profile_image_url=${encodeURIComponent(profile_image_url)}`);
   } catch (err) {
@@ -67,7 +64,7 @@ router.get('/callback', async (req, res) => {
   }
 });
 
-// Optional: Endpoint to get user info from session
+
 router.get('/me', (req, res) => {
   if (req.session.xUser) {
     res.json(req.session.xUser);

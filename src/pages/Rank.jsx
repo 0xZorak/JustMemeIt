@@ -64,7 +64,6 @@ const Rank = () => {
                 </div>
                 <div className="confetti"></div>
               </a>
-             
             ))
           ) : (
             <div className="no-winner">No winner yet!</div>

@@ -11,7 +11,7 @@ import {
 } from "wagmi";
 import { parseEther } from "viem";
 import { useModal } from "../context/ModalContext";
-import backgroundImg from "../images/background.png"; // adjust filename if needed
+import backgroundImg from "../images/background.png";
 
 const X_USER_KEY = "xUser";
 
@@ -23,10 +23,9 @@ const Vote = ({ lightMode }) => {
   const [selectedMeme, setSelectedMeme] = useState(null);
   const [memeVotes, setMemeVotes] = useState({});
   const [votingMemes, setVotingMemes] = useState([]);
-  const [alertMsg, setAlertMsg] = useState(""); // Add this state
+  const [alertMsg, setAlertMsg] = useState("");
   const dropdownRef = useRef(null);
 
-  // On mount: check for X login in URL or localStorage
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const user_id = params.get("user_id");
@@ -36,15 +35,13 @@ const Vote = ({ lightMode }) => {
       const user = { user_id, name, profile_image_url };
       setXUser(user);
       localStorage.setItem(X_USER_KEY, JSON.stringify(user));
-      window.history.replaceState({}, document.title, window.location.pathname); // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
     } else {
-      // Try to load from localStorage
       const stored = localStorage.getItem(X_USER_KEY);
       if (stored) setXUser(JSON.parse(stored));
     }
   }, []);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -68,13 +65,11 @@ const Vote = ({ lightMode }) => {
   const { switchChain } = useSwitchChain();
   const chainId = useChainId();
 
-  // Custom alert handler
   const showAlert = (msg) => {
     setAlertMsg(msg);
     setTimeout(() => setAlertMsg(""), 2000);
   };
 
-  // Dummy vote handler
   const handleVote = async (voteCount, totalSei) => {
     if (!isConnected) {
       showAlert("Connect your wallet first!");
@@ -86,22 +81,17 @@ const Vote = ({ lightMode }) => {
       return;
     }
     try {
-      // Use totalSei as passed from the modal, do not recalculate
       const value = parseEther(totalSei.toString());
       const tx = await sendTransactionAsync({
         to: VOTE_RECEIVER,
         value,
         chainId: 1329,
       });
-      console.log("Transaction result:", tx);
-
       const txHash = typeof tx === "string" ? tx : tx?.hash;
       if (!txHash) {
         showAlert("Transaction failed: No txHash returned");
         return;
       }
-
-      // Await and parse the backend response
       const res = await fetch("http://localhost:4000/api/vote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -111,11 +101,10 @@ const Vote = ({ lightMode }) => {
           txHash,
           voter: address,
           votes: voteCount,
-          value: value.toString(), // must be string, in wei
+          value: value.toString(),
         }),
       });
       const data = await res.json();
-
       if (data.success) {
         setMemeVotes((prev) => ({
           ...prev,
@@ -131,7 +120,6 @@ const Vote = ({ lightMode }) => {
     }
   };
 
-  // Fetch voting memes from backend
   useEffect(() => {
     const fetchVotingMemes = () => {
       fetch("http://localhost:4000/api/vote/voting-memes")
@@ -139,13 +127,12 @@ const Vote = ({ lightMode }) => {
         .then((data) => setVotingMemes(data.memes || []));
     };
     fetchVotingMemes();
-    const interval = setInterval(fetchVotingMemes, 10000); // every 10s
+    const interval = setInterval(fetchVotingMemes, 10000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      {/* Alert box */}
       {alertMsg && (
         <div
           style={{
@@ -177,7 +164,6 @@ const Vote = ({ lightMode }) => {
           transition: "filter 0.2s",
         }}
       >
-        {/* Title and grid/list toggle */}
         <div
           style={{
             display: "flex",
@@ -247,8 +233,6 @@ const Vote = ({ lightMode }) => {
             </button>
           </span>
         </div>
-
-        {/* Meme grid/list - new layout */}
         <div
           className="vote-page-grid"
           style={{
@@ -264,7 +248,7 @@ const Vote = ({ lightMode }) => {
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
             borderRadius: 20,
-            minHeight: 520, 
+            minHeight: 520,
           }}
         >
           {votingMemes.length === 0 && (
@@ -317,9 +301,9 @@ const Vote = ({ lightMode }) => {
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
-                    maxWidth: 200, // adjust as needed for your layout
+                    maxWidth: 200,
                   }}
-                  title={meme.caption.length > 120 ? meme.caption : undefined} // show full caption on hover if truncated
+                  title={meme.caption.length > 120 ? meme.caption : undefined}
                 >
                   {meme.caption.length > 120
                     ? meme.caption.slice(0, 117) + "..."
@@ -352,8 +336,6 @@ const Vote = ({ lightMode }) => {
           ))}
         </div>
       </div>
-
-      {/* Meme modal */}
       <MemeVoteModal
         open={!!selectedMeme}
         onClose={() => setSelectedMeme(null)}
@@ -363,7 +345,7 @@ const Vote = ({ lightMode }) => {
             meme_image: selectedMeme.image_url.startsWith("http")
               ? selectedMeme.image_url
               : `http://localhost:4000${selectedMeme.image_url}`,
-            memeName: selectedMeme.caption, 
+            memeName: selectedMeme.caption,
             uploader: selectedMeme.username || selectedMeme.name || "unknown",
             price_in_sei: Number(selectedMeme.price_in_sei) || 0.005,
           }

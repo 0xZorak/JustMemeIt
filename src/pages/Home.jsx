@@ -5,14 +5,14 @@ import pepeImg from "../images/mili.png";
 import pepeIm from "../images/frpo.png";
 import pepeI from "../images/seiyan.png";
 import pepe from "../images/shenro.png"; 
-import pep from "../images/popos.png";// Adjust the path if needed
+import pep from "../images/popos.png";
 
 const CURTAIN_COLORS = [
-  "#000", // green
-  "#111", // pink
-  "#222", // blue
-  "#333", // yellow
-  "#444", // orange
+  "#000",
+  "#111",
+  "#222",
+  "#333",
+  "#444",
 ];
 
 const Home = ({ lightMode }) => {
@@ -35,8 +35,8 @@ const Home = ({ lightMode }) => {
     vantaEffect.current = GLOBE({
       el: vantaRef.current,
       THREE: THREE,
-      mouseControls: false,
-      touchControls: false,
+      mouseControls: true,
+      touchControls: true,
       minHeight: 200.0,
       minWidth: 200.0,
       scale: 1.0,
@@ -52,7 +52,6 @@ const Home = ({ lightMode }) => {
     };
   }, [lightMode]);
 
-  // Curtain animation: trigger each curtain up one by one
   useEffect(() => {
     let timers = [];
     for (let i = CURTAIN_COLORS.length - 1; i >= 0; i--) {
@@ -66,7 +65,6 @@ const Home = ({ lightMode }) => {
         }, (CURTAIN_COLORS.length - 1 - i) * 500)
       );
     }
-    // After all curtains are up, remove the overlay
     timers.push(
       setTimeout(() => setCurtainDone(true), CURTAIN_COLORS.length * 500)
     );
@@ -82,7 +80,7 @@ const Home = ({ lightMode }) => {
         minHeight: "100vh",
       }}
     >
-      {/* Curtain Animation Overlay */}
+
       {!curtainDone && (
         <div
           style={{
@@ -100,7 +98,7 @@ const Home = ({ lightMode }) => {
               key={color}
               style={{
                 flex: 1,
-                minWidth: 0, // <-- Add this line
+                minWidth: 0,
                 background: color,
                 position: "relative",
                 overflow: "hidden",
@@ -114,7 +112,7 @@ const Home = ({ lightMode }) => {
                 justifyContent: "center",
               }}
             >
-              {/* Pepe image only on the #000 curtain */}
+          
               {color === "#000" && (
                 <img
                   src={pepeImg}
@@ -136,7 +134,7 @@ const Home = ({ lightMode }) => {
                 />
               )}
               
-              {/* frpo image only on the #222 curtain */}
+             
               {color === "#222" && (
                 <img
                   src={pepeIm}
@@ -222,7 +220,7 @@ const Home = ({ lightMode }) => {
         </div>
       )}
 
-      {/* Vanta Globe Background */}
+
       <div
         ref={vantaRef}
         style={{
@@ -234,10 +232,10 @@ const Home = ({ lightMode }) => {
           zIndex: 0,
         }}
       />
-      {/* Colorful squares overlay */}
+     
       <ColorGridOverlay colors={CURTAIN_COLORS} rows={8} cols={16} opacity={0.18} />
 
-      {/* Content */}
+ 
       <div
         className="home-content"
         style={{
@@ -268,7 +266,7 @@ function ColorGridOverlay({ colors, rows = 8, cols = 16, opacity = 0.18 }) {
     const interval = setInterval(() => {
       setOffsets((prev) =>
         prev.map(() => ({
-          x: (Math.random() - 0.5) * 12, // random shift between -6px and 6px
+          x: (Math.random() - 0.5) * 12,
           y: (Math.random() - 0.5) * 12,
         }))
       );

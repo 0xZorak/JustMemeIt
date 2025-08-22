@@ -28,10 +28,10 @@ router.post('/transform', upload.single('image'), async (req, res) => {
         const prompt = STYLE_PROMPTS[style];
         imagePath = req.file.path;
 
-        // Read image as buffer
+
         const imageBuffer = fs.readFileSync(imagePath);
 
-        // Connect to Gradio Space
+
         console.log("Connecting to Gradio Space: black-forest-labs/FLUX.1-Kontext-Dev");
         console.log("Using HF_API_TOKEN:", process.env.HF_API_TOKEN ? "Yes" : "No");
 
@@ -39,7 +39,6 @@ router.post('/transform', upload.single('image'), async (req, res) => {
             hf_token: process.env.HF_API_TOKEN
         });
 
-        // Call /infer endpoint
         const result = await client.predict("/infer", {
             input_image: imageBuffer,
             prompt: prompt,
@@ -53,21 +52,18 @@ router.post('/transform', upload.single('image'), async (req, res) => {
             throw new Error("No image URL returned from Hugging Face Space");
         }
 
-        // Download the generated image from Hugging Face Space
         const imageUrl = result.data[0].url;
         console.log("Generated image URL:", imageUrl);
         const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
         if (response.status !== 200) throw new Error("Failed to fetch generated image from Space");
         const buffer = Buffer.from(response.data);
 
-        // Save to public/generated_memes/
         const outDir = path.join(__dirname, '../public/generated_memes');
         if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
         const filename = `memeai_${crypto.randomBytes(8).toString('hex')}.png`;
         const outPath = path.join(outDir, filename);
         fs.writeFileSync(outPath, buffer);
 
-        // Return local URL for frontend
         res.json({ image: `/generated_memes/${filename}`, seed: result.data[1] });
 
     } catch (err) {
@@ -86,7 +82,6 @@ router.post('/mint-nft', async (req, res) => {
         if (!imagePath || !style || !walletAddress) {
             return res.status(400).json({ error: 'Missing image, style, or wallet address' });
         }
-        // Generate metadata and upload to IPFS
         const title = `MemeAI ${style.toUpperCase()} Meme`;
         const description = `Generated meme in ${style} style using MemeAI.`;
         const metadata = await uploadMemeAndMetadataToIPFS({
@@ -96,7 +91,6 @@ router.post('/mint-nft', async (req, res) => {
             creatorWallet: walletAddress
         });
 
-        // Mint NFT to user's wallet
         const receipt = await mintNFT(walletAddress, metadata.metadataUrl, title);
         res.json({ success: true, txHash: receipt.hash });
     } catch (err) {

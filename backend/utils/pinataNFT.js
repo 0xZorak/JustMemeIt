@@ -7,7 +7,6 @@ const pinata = new pinataSDK(process.env.PINATA_API_KEY, process.env.PINATA_SECR
 
 async function uploadMemeAndMetadataToIPFS({ imagePath, title, description, creatorWallet }) {
 
-  // 1. Upload image file to IPFS
   const readableStream = fs.createReadStream(imagePath);
   const imageResult = await pinata.pinFileToIPFS(readableStream, {
     pinataMetadata: { name: path.basename(imagePath) }
@@ -15,7 +14,6 @@ async function uploadMemeAndMetadataToIPFS({ imagePath, title, description, crea
   const imageCID = imageResult.IpfsHash;
   const imageUrl = `ipfs://${imageCID}`;
 
-  // 2. Create ERC-721 metadata JSON
   const metadata = {
     name: title,
     description,
@@ -25,7 +23,6 @@ async function uploadMemeAndMetadataToIPFS({ imagePath, title, description, crea
     ]
   };
 
-  // 3. Upload metadata JSON to IPFS
   const metadataResult = await pinata.pinJSONToIPFS(metadata, {
     pinataMetadata: { name: `${title}-metadata` }
   });

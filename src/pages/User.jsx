@@ -22,7 +22,7 @@ const User = () => {
   const { address, isConnected } = useAccount();
   const [alertMsg, setAlertMsg] = useState("");
 
-  // Load X user from localStorage
+ 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const user_id = params.get("user_id");
@@ -39,7 +39,7 @@ const User = () => {
     }
   }, []);
 
-  // Reload xUser when modal closes (after X connect)
+
   useEffect(() => {
     if (!isLoginModalOpen) {
       const stored = localStorage.getItem(X_USER_KEY);
@@ -47,7 +47,7 @@ const User = () => {
     }
   }, [isLoginModalOpen]);
 
-  // Fetch user memes when xUser is set
+
   useEffect(() => {
     if (xUser) {
       fetch(`http://localhost:4000/api/vote/user-memes/${xUser.user_id}`)
@@ -56,19 +56,19 @@ const User = () => {
     }
   }, [xUser]);
 
-  // Only allow modal to close if both are connected
+  
   const handleCloseModal = () => {
     if (xUser && isConnected) setLoginModalOpen(false);
   };
 
-  // Select meme for voting
+
   const handleSelectMeme = (meme) => {
-    if (meme.in_voting) return; // can't select memes already in voting
+    if (meme.in_voting) return; 
     setSelectedMemeId(meme._id);
     setEditCaption(meme.caption);
   };
 
-  // Send selected meme for voting
+
   const sendForVoting = async () => {
     if (!selectedMemeId) return;
     const res = await fetch("http://localhost:4000/api/vote/send-for-voting", {
@@ -96,7 +96,7 @@ const User = () => {
     }
   };
 
-  // Delete meme
+
   const deleteMeme = async (meme_id) => {
     if (!window.confirm("Are you sure you want to delete this meme?")) return;
     const res = await fetch(
@@ -131,7 +131,7 @@ const User = () => {
     }
   };
 
-  // Custom alert handler
+
   const showAlert = (msg) => {
     setAlertMsg(msg);
     setTimeout(() => setAlertMsg(""), 2000);
@@ -141,7 +141,6 @@ const User = () => {
 
   return (
     <div className="user-page">
-      {/* Alert box */}
       {alertMsg && (
         <div
           style={{
@@ -201,7 +200,7 @@ const User = () => {
             </div>
           </>
         ) : (
-          // Show user profile when both are connected
+
           <div className="user-profile-unlock-row">
             <div className="profile-card-container">
               <div className="profile-title">Profile</div>

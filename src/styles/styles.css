@@ -81,7 +81,7 @@ body.light-mode {
   flex-direction: column;
   width: 90px;
   height: 100vh;
-  padding: 20px 0;
+padding: 20px 0;
   align-items: center;
   border-right: 0.5px solid rgba(105, 104, 104, 0.228);
   background: #181818;
@@ -102,7 +102,7 @@ body.light-mode {
   display: flex;
   flex-direction: column;
   gap: 24px; /* Adjust gap as needed */
-  margin-top: 30px;
+
   margin-bottom: auto; /* Push bottom-icons to the bottom */
 }
 
@@ -122,20 +122,24 @@ body.light-mode {
   align-items: center;
   font-size: 22px; /* reduced from 22px */
   margin: 0 30px;
-  color: #fff;
   transition: color 0.2s, background 0.2s;
-  border-radius: 12px;
-  padding: 8px 0;
+  color: #aaa;
+  background: transparent;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.sidebar-icon:hover,
-.sidebar-icon:focus {
+.sidebar-icon:hover {
   transform: scale(1.18); 
   z-index: 1;
 }
 
 .sidebar-icon.active {
-  color: #487fffb2;
+  color: #6d8fd8;
+  
 }
 
 .sidebar-icon i,
@@ -214,19 +218,16 @@ body.light-mode .toggle-mode {
   font-size: 28px; 
 }
 
-.logo-underline {
+.top-icons .logo-underline {
   width: 40px;
   height: 2px;
   background: #fff;
   opacity: 0.3;
   border-radius: 1px;
-  margin: 10px 0;
+  margin: 10px 0 10px 40px;
 }
 
-body.light-mode .logo-underline {
-  background: #222; /* dark color for visibility in light mode */
-  opacity: 0.2;
-}
+
 
 .sidebar-icon span {
   font-size: 12px; /* reduced from 12px or higher */

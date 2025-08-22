@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAccount } from "wagmi"; // or your wallet provider
+import { useAccount } from "wagmi";
 import "../styles/memeai.css";
 
 const STYLE_OPTIONS = [
@@ -9,11 +9,11 @@ const STYLE_OPTIONS = [
 ];
 
 const MemeAI = () => {
-  const { address } = useAccount(); // gets the connected wallet address
+  const { address } = useAccount();
   const [selectedStyle, setSelectedStyle] = useState("popo");
   const [imageFile, setImageFile] = useState(null);
   const [resultImage, setResultImage] = useState(null);
-  const [resultImagePath, setResultImagePath] = useState(""); // local path for NFT
+  const [resultImagePath, setResultImagePath] = useState("");
   const [loading, setLoading] = useState(false);
   const [minting, setMinting] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
@@ -50,7 +50,7 @@ const MemeAI = () => {
       const data = await res.json();
       if (data.image) {
         setResultImage(`http://localhost:4000${data.image}`);
-        setResultImagePath(data.image); // save local path for NFT minting
+        setResultImagePath(data.image);
       } else {
         setAlertMsg(data.error || "Failed to generate meme.");
       }
@@ -70,7 +70,7 @@ const MemeAI = () => {
         body: JSON.stringify({
           imagePath: resultImagePath,
           style: selectedStyle,
-          walletAddress: address, // send user's wallet address
+          walletAddress: address,
         }),
       });
       const data = await res.json();

@@ -11,11 +11,11 @@ const path = require('path');
 const fs = require('fs');
 
 const router = express.Router();
-const MCP_SERVER_URL = 'http://localhost:3001'; // MCP server endpoint
+const MCP_SERVER_URL = 'http://localhost:3001';  
 
 const upload = multer({ dest: path.join(__dirname, '../uploads') });
 
-// POST /api/vote
+
 router.post('/', async (req, res) => {
   const { memeId, memeName, txHash, voter, votes, value, voter_wallet_address } = req.body;
 
@@ -193,7 +193,7 @@ router.post('/reset-week', async (req, res) => {
           const receipt = await mintNFT(recipientWallet, metadataUrl);
           console.log("NFT Minted! Tx:", receipt.hash);
 
-          // Get tokenId from receipt (assumes contract emits Transfer event)
+          
           // const transferEvent = receipt.logs.find(
           //   log => log.topics[0] === ethers.id("Transfer(address,address,uint256)")
           // );
@@ -220,7 +220,7 @@ router.post('/reset-week', async (req, res) => {
             const receipt = await mintNFT(voter, metadataUrl);
             console.log(`NFT Minted for voter ${voter}! Tx:`, receipt.hash);
 
-            // Extract tokenId and list
+           
             // const transferEvent = receipt.logs.find(
             //   log => log.topics[0] === ethers.id("Transfer(address,address,uint256)")
             // );

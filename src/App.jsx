@@ -7,7 +7,7 @@ import Vote from './pages/Vote';
 import Rank from './pages/Rank';
 import Assets from './pages/Assets';
 import User from './pages/User';
-import { FaDesktop } from 'react-icons/fa'; // npm install react-icons
+import { FaDesktop } from 'react-icons/fa'; 
 import MemeAI from './pages/MemeAI';
 import './styles/styles.css';
 

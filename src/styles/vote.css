@@ -84,7 +84,6 @@ body.light-mode .vote-header span {
   color: #000;
 }
 
-/* Modal styles */
 .modal {
   position: fixed;
   top: 0;
@@ -177,7 +176,7 @@ body.light-mode .vote-header span {
   background: #484848;
   color: #fff;
 }
-/* Stronger override for RainbowKit Connect button */
+
 .login-options button[data-testid="rk-connect-button"],
 .rk-connect-btn {
   background: #fff !important;
@@ -218,8 +217,7 @@ body.light-mode .vote-header span {
 .page-scroll-area {
   flex: 1;
   overflow-y: auto;
-  /* min-height: 0; */
-  /* height: 100%; */
+
 }
 
 .vote-page-grid {

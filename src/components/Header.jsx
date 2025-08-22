@@ -42,17 +42,13 @@ const Header = ({ lightMode }) => {
     window.location.reload();
   };
 
-  // Optional: logout handler for X
-
   const toggleHowToPlayModal = () => setHowToPlayModalOpen((open) => !open);
   const toggleLoginModal = () => setLoginModalOpen((open) => !open);
 
-  // Real X login: redirect to backend
   const handleXLogin = () => {
     window.location.href = "http://localhost:4000/auth/x/login";
   };
 
-  // Guarded modal toggle
   const guardedToggleLoginModal = () => {
     if (!xUser && !isConnected) setLoginModalOpen((open) => !open);
   };
@@ -71,7 +67,7 @@ const Header = ({ lightMode }) => {
         left: 90,
         right: 0,
         zIndex: 100,
-        background: lightMode ? "#eee" : "#181818", // changed from #fff to #eee
+        background: lightMode ? "#eee" : "#181818",
         color: lightMode ? "#222" : "#fff",
         borderBottom: lightMode ? "1px solid #eee" : undefined,
       }}
@@ -206,7 +202,6 @@ const Header = ({ lightMode }) => {
                 </div>
               )}
             </div>
-
             <ConnectButton />
           </>
         )}
@@ -224,12 +219,10 @@ const Header = ({ lightMode }) => {
           <p className="sub-text">
             See a funny or viral meme posted by Elon Musk or anyone else?
           </p>
-        
           <p>2. Collect Memes During the Day</p>
           <p className="sub-text">
             Every meme you “meme’d” gets added to your private dashboard.
           </p>
-         
           <p>3. Pick Your Best Meme for the Weekly Battle</p>
           <p className="sub-text">
             Once a week, choose one meme from your gallery to enter into the

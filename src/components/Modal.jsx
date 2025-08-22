@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-// import './Modal.css'; // Assuming you have a separate CSS file for modal styles
 import { useModal } from '../context/ModalContext';
 
 const Modal = ({ isOpen, onClose, title, children }) => {
@@ -15,7 +14,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
   return (
     <div
       className="modal"
-      onClick={onClose} // Close modal when clicking the background
+      onClick={onClose}
       style={{
         position: "fixed",
         top: 0, left: 0, right: 0, bottom: 0,
@@ -28,7 +27,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
     >
       <div
         className="modal-content"
-        onClick={e => e.stopPropagation()} // Prevent closing when clicking inside modal
+        onClick={e => e.stopPropagation()}
         style={{
           background: "#222",
           borderRadius: 16,

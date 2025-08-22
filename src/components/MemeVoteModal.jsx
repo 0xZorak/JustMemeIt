@@ -19,7 +19,6 @@ const MemeVoteModal = ({ open, onClose, meme, onVote }) => {
 
   const handleIncrement = () => setVoteCount((c) => Math.min(c + 1, 100));
   const handleDecrement = () => setVoteCount((c) => Math.max(c - 1, 1));
-
   const totalSei = meme.price_in_sei * voteCount;
 
   const handleVoteClick = () => {

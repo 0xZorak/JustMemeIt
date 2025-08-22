@@ -62,7 +62,7 @@
     "@babel/plugin-transform-numeric-separator": "^7.27.1"
   },
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   },
   "homepage": "https://0xzorak.github.io/JustMemeIt"
 }

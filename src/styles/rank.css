@@ -181,7 +181,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   box-sizing: border-box;
-  padding-right: 0; /* Remove extra padding if any */
+  padding-right: 0;
 }
 
 .rank-page {
@@ -189,7 +189,6 @@
   background: #10131a;
   position: relative;
   overflow-x: hidden;
-  font-family: 'Orbitron', 'Poppins', 'Montserrat', sans-serif;
 }
 
 .rank-parallax-bg {
@@ -317,7 +316,6 @@
   margin: 10px 0;
   color: #ccc;
   font-size: 1.1rem;
-  font-family: 'Poppins', 'Montserrat', sans-serif;
   opacity: 0.95;
 }
 
@@ -337,7 +335,6 @@
   color: #aaa;
   margin-top: 4px;
   font-size: 1rem;
-  font-family: 'Poppins', 'Montserrat', sans-serif;
 }
 
 .confetti {

@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const cron = require('node-cron');
 const axios = require('axios');
 const aiMemeApi = require('./aiMemeApi');
+const NFT = require('./models/NFT');
 
 const app = express();
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
@@ -32,6 +33,17 @@ cron.schedule('59 23 * * 6', async () => {
     console.log('Weekly meme reset completed!');
   } catch (err) {
     console.error('Weekly reset failed:', err.message);
+  }
+});
+
+app.get('/api/nfts', async (req, res) => {
+  const { owner } = req.query;
+  if (!owner) return res.status(400).json({ error: 'Missing owner address' });
+  try {
+    const nfts = await NFT.find({ owner: owner.toLowerCase() }).sort({ mintedAt: -1 });
+    res.json({ nfts });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch NFTs' });
   }
 });
 

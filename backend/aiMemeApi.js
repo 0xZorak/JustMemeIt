@@ -92,7 +92,7 @@ router.post('/mint-nft', async (req, res) => {
             creatorWallet: walletAddress
         });
 
-        // Mint NFT to user's wallet and save to DB
+
         const receipt = await mintNFT(
             walletAddress,
             metadata.metadataUrl,

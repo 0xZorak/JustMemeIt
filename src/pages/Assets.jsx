@@ -195,7 +195,6 @@ export default function Assets() {
                 className={`nft-card${view === "list" ? " list" : ""}`}
                 style={{ animationDelay: `${idx * 0.08}s` }}
               >
-                //push
                 <div className="nft-img-wrap">
                   <img
                     src={getImageUrl(nft.image)}

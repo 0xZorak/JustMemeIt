@@ -20,7 +20,6 @@ async function mintNFT(to, tokenURI, image, name, source = 'reset') {
   const tx = await contract.mintNFT(to, tokenURI);
   const receipt = await tx.wait();
 
-  // Find the Transfer event and extract tokenId
   let tokenId;
   for (const log of receipt.logs) {
     try {

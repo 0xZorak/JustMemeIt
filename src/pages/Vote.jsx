@@ -266,7 +266,7 @@ const Vote = ({ lightMode }) => {
                 background: "#212122ff",
                 borderRadius: 18,
                 boxShadow: "0 2px 12px #0004",
-                padding: 24,
+                padding: "0 20px",
                 maxHeight: view === "grid" ? 160 : 90,
                 width: view === "grid" ? 360 : "96%",
                 margin: view === "grid" ? "0" : "0 0 20px 0",

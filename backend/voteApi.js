@@ -107,7 +107,7 @@ router.post('/send-for-voting', async (req, res) => {
         ...(caption && { caption }),
         ...(username && { username }),
         ...(name && { name }),
-        creator_wallet_address, 
+        creator_wallet_address,
       },
       { new: true }
     );
@@ -190,7 +190,11 @@ router.post('/reset-week', async (req, res) => {
 
       if (recipientWallet && metadataUrl) {
         try {
-          const receipt = await mintNFT(recipientWallet, metadataUrl);
+          const name = winner.name || winner.username || "Meme Winner";
+          const image = winner.image_url;
+          const metadataUri = metadataUrl;
+
+          const receipt = await mintNFT(recipientWallet, metadataUri, image, name, 'reset');
           console.log("NFT Minted! Tx:", receipt.hash);
 
           
@@ -217,7 +221,9 @@ router.post('/reset-week', async (req, res) => {
         // Mint and list for voters
         for (const voter of voterWallets) {
           try {
-            const receipt = await mintNFT(voter, metadataUrl);
+            const name = voter.name || voter.username || "Meme Winner";
+            const image = winner.image_url;
+            const receipt = await mintNFT(voter, metadataUrl, image, name, 'reset');
             console.log(`NFT Minted for voter ${voter}! Tx:`, receipt.hash);
 
            

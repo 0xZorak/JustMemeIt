@@ -8,6 +8,7 @@ const crypto = require('crypto');
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 const { mintNFT } = require('./utils/mintNFT');
 const { uploadMemeAndMetadataToIPFS } = require('./utils/pinataNFT');
+const NFT = require('./models/NFT');
 
 const router = express.Router();
 const upload = multer({ dest: path.join(__dirname, '../uploads') });
@@ -91,8 +92,16 @@ router.post('/mint-nft', async (req, res) => {
             creatorWallet: walletAddress
         });
 
-        const receipt = await mintNFT(walletAddress, metadata.metadataUrl, title);
-        res.json({ success: true, txHash: receipt.hash });
+        // Mint NFT to user's wallet and save to DB
+        const receipt = await mintNFT(
+            walletAddress,
+            metadata.metadataUrl,
+            metadata.imageUrl,
+            title,
+            'memeai'
+        );
+
+        res.json({ success: true, txHash: receipt.txHash });
     } catch (err) {
         console.error('Mint NFT Error:', err.message || err);
         res.status(500).json({ error: 'NFT minting failed' });

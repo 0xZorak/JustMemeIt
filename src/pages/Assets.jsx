@@ -125,7 +125,7 @@ export default function Assets() {
         <img
           ref={imgRef}
           crossOrigin="anonymous"
-          src={xProfileUrl || "/images/avatar.png"}
+          src={xProfileUrl || "../images/avatar.png"}
           alt="Profile"
           className="assets-profile-img"
         />

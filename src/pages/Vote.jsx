@@ -92,7 +92,7 @@ const Vote = ({ lightMode }) => {
         showAlert("Transaction failed: No txHash returned");
         return;
       }
-      const res = await fetch("https://justmemeit.onrender.com/api/vote", {
+      const res = await fetch("https://jmi-backend-5rha.onrender.com/api/vote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -122,7 +122,7 @@ const Vote = ({ lightMode }) => {
 
   useEffect(() => {
     const fetchVotingMemes = () => {
-      fetch("https://justmemeit.onrender.com/api/vote/voting-memes")
+      fetch("https://jmi-backend-5rha.onrender.com/api/vote/voting-memes")
         .then((res) => res.json())
         .then((data) => setVotingMemes(data.memes || []));
     };
@@ -278,7 +278,7 @@ const Vote = ({ lightMode }) => {
                 src={
                   meme.image_url.startsWith("http")
                     ? meme.image_url
-                    : `https://justmemeit.onrender.com${meme.image_url}`
+                    : `https://jmi-backend-5rha.onrender.com${meme.image_url}`
                 }
                 alt={meme.caption}
                 style={{
@@ -322,7 +322,7 @@ const Vote = ({ lightMode }) => {
                   }}
                 >
                   <img
-                    src="https://justmemeit.onrender.com/user_memes/sei_red_symbol.png"
+                    src="https://jmi-backend-5rha.onrender.com/user_memes/sei_red_symbol.png"
                     alt=""
                     style={{
                       width: 15,
@@ -345,7 +345,7 @@ const Vote = ({ lightMode }) => {
             ...selectedMeme,
             meme_image: selectedMeme.image_url.startsWith("http")
               ? selectedMeme.image_url
-              : `https://justmemeit.onrender.com${selectedMeme.image_url}`,
+              : `https://jmi-backend-5rha.onrender.com${selectedMeme.image_url}`,
             memeName: selectedMeme.caption,
             uploader: selectedMeme.username || selectedMeme.name || "unknown",
             price_in_sei: Number(selectedMeme.price_in_sei) || 0.005,

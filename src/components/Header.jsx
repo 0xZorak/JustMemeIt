@@ -46,7 +46,7 @@ const Header = ({ lightMode }) => {
   const toggleLoginModal = () => setLoginModalOpen((open) => !open);
 
   const handleXLogin = () => {
-    window.location.href = "https://justmemeit.onrender.com/auth/x/login";
+    window.location.href = "https://jmi-backend-5rha.onrender.com/auth/x/login";
   };
 
   const guardedToggleLoginModal = () => {

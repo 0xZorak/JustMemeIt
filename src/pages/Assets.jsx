@@ -39,7 +39,7 @@ export default function Assets() {
     if (!wallet) return;
     setLoading(true);
     setError("");
-    fetch(`https://justmemeit.onrender.com/api/nfts?owner=${wallet}`)
+    fetch(`https://jmi-backend-5rha.onrender.com/api/nfts?owner=${wallet}`)
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();

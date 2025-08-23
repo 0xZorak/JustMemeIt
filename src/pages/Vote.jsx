@@ -267,7 +267,7 @@ const Vote = ({ lightMode }) => {
                 borderRadius: 18,
                 boxShadow: "0 2px 12px #0004",
                 padding: "0 20px",
-                maxHeight: view === "grid" ? 160 : 90,
+                maxHeight: view === "grid" ? 160 : 160,
                 width: view === "grid" ? 360 : "96%",
                 margin: view === "grid" ? "0" : "0 0 20px 0",
                 cursor: "pointer",
@@ -289,6 +289,7 @@ const Vote = ({ lightMode }) => {
                   marginRight: 28,
                   background: "#222",
                   border: "2px solid #222",
+                  padding: "10px 0",
                 }}
               />
               <div style={{ flex: 1 }}>

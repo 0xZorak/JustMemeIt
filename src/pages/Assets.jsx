@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAccount } from "wagmi";
 import "../styles/assets.css";
+import avatar from "../images/avatar.png";
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest" },
@@ -125,7 +126,7 @@ export default function Assets() {
         <img
           ref={imgRef}
           crossOrigin="anonymous"
-          src={xProfileUrl || "../images/avatar.png"}
+          src={xProfileUrl || avatar}
           alt="Profile"
           className="assets-profile-img"
         />

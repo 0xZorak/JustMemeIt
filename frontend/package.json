@@ -63,6 +63,5 @@
   },
   "engines": {
     "node": "22.x"
-  },
-  "homepage": "https://0xzorak.github.io/JustMemeIt"
+  }
 }
